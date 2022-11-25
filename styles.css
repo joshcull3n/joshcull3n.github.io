@@ -1,3 +1,14 @@
+footer {
+  position: absolute;
+  bottom: 0;
+  height: 20px;
+  padding-left: 20px;
+  padding-bottom: 10px;
+}
+body {
+  margin-bottom: 20px;
+}
+
 .top-block > * {
   margin-block-start: 0;
   margin-block-end: 0;
@@ -6,22 +17,13 @@
   margin-block-start: 24px;
 }
 body {
-  --font-size--small: 1.125rem;
-  --font-size--medium: 20px;
-  --font-size--large: 1.5rem;
-  --font-size--x-large: 42px;
-  --font-size--tiny: 1rem;
-  --font-size--normal: 1.25rem;
-  --font-size--extra-large: 2rem;
   --font-size--huge: 2.375rem;
-  --font-size--gigantic: 3.125rem;
-  
   --spacing--60: 2.25rem;
 
   background-color: black;
   color: #e3bcaf;
   font-family: "Work Sans";
-  font-size: 1.5;
+  font-size: 0.85em;
   line-height: 1.5;
   padding: 0;
 }
