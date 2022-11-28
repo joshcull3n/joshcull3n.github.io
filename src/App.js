@@ -33,8 +33,8 @@ const Intro = () => {
 
 const Footer = () => {
   return (
-    <footer className="footer" style={{ padding: 0, paddingTop: '2.25rem'}}>
-      <div width="100%">
+    <footer className="footer" style={{ padding: '1rem 0 1rem', width: '100%', textAlign: 'center'}}>
+      <div>
         <a href={resume}>peruse my resume</a>
       </div>
     </footer>
