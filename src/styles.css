@@ -7,6 +7,28 @@ footer {
 }
 body {
   margin: 0;
+  height: 100vh;
+}
+
+
+/* TODO: chrome/safari scroll bar is turned off bc its ugly. make it nice. */
+.navBar::-webkit-scrollbar { 
+  display: none;  /* Safari and Chrome */
+}
+
+.navPic {
+  padding:1px 1px 1px 0px;
+  object-fit: cover;
+  height: 50vh;
+  max-width: 50vh;
+}
+
+table {
+  overflow-x: scroll;
+  display: flex;  
+  padding-left: 2.1rem;
+  margin-top: 1rem;
+  height: 69%
 }
 
 .top-block > * {

@@ -5,7 +5,7 @@ import resume from '../files/Nov_2022.pdf'
 const TopBar = () => {
   return (
     <div className="top-block">
-      <div className="is-layout-flex" style={{ flexWrap: 'nowrap', display: 'flex', padding: '2.25rem' }}>
+      <div className="is-layout-flex" style={{ flexWrap: 'nowrap', display: 'flex', padding: '2.25rem', paddingBottom: '.25rem' }}>
         <a href="index.html">
           <img decoding='async' src={icon} alt="me" width="112" height="112" />
         </a>
@@ -26,7 +26,7 @@ const TopBar = () => {
 const Intro = () => {
   return (
     <div className="is-layout-flex" style={{ paddingLeft: '2.25rem', minWidth: '71px' }}>
-      <p>hello there, this is my website. please enjoy yourself. your time on this earth is short.<br/><br/> &#8211; josh</p>
+      <p>los angeles based software guy. currently head of QA at <a href="https://www.gridspace.com/">Gridspace</a>.</p>
     </div>
   )
 }
@@ -41,11 +41,36 @@ const Footer = () => {
   )
 }
 
+const NavigationBar = () => {
+  return (
+    <div>
+      <table className='navBar'>
+        <tr>
+          <NavigationItem imgUrl='https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg' link='/projects'/>
+          <NavigationItem imgUrl='https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg' link='/photography'/>
+          <NavigationItem imgUrl='https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg' link='/music'/>
+        </tr>
+      </table>
+    </div>
+  )
+}
+
+const NavigationItem = (props) => {
+  return (
+    <td style={{padding:'0px'}}>
+      <div>
+        <a href={props.link}><img className='navPic' src={props.imgUrl}/></a>
+      </div>
+    </td>
+  )
+}
+
 const App = () => {
   return (
     <div>
       <TopBar />
       <Intro />
+      <NavigationBar />
       <Footer />
     </div>
   )
