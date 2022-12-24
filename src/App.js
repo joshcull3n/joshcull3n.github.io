@@ -7,7 +7,7 @@ const TopBar = () => {
     <div className="top-block">
       <div className="is-layout-flex" style={{ flexWrap: 'nowrap', display: 'flex', padding: '2.25rem', paddingBottom: '.25rem' }}>
         <a href="index.html">
-          <img decoding='async' src={icon} alt="me" width="112" height="112" />
+          <img decoding="async" src={icon} alt="me" width="112" height="112" />
         </a>
         <div className="is-layout-flex">
           <h2>josh cullen</h2>
@@ -59,7 +59,7 @@ const GalleryItem = (props) => {
   return (
     <td style={{padding:'0px'}}>
       <div>
-        <a href={props.link}><img className='navPic' src={props.imgUrl}/></a>
+        <a href={props.link}><img className='navPic' alt='gallery item thumbnail' src={props.imgUrl}/></a>
       </div>
     </td>
   )
@@ -70,7 +70,6 @@ const App = () => {
     <div>
       <TopBar />
       <Intro />
-      <HorizontalGallery />
       <Footer />
     </div>
   )
