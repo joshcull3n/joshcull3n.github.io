@@ -41,21 +41,21 @@ const Footer = () => {
   )
 }
 
-const NavigationBar = () => {
+const HorizontalGallery = () => {
   return (
     <div>
       <table className='navBar'>
         <tr>
-          <NavigationItem imgUrl='https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg' link='/projects'/>
-          <NavigationItem imgUrl='https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg' link='/photography'/>
-          <NavigationItem imgUrl='https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg' link='/music'/>
+          <GalleryItem imgUrl='https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg' link='/projects'/>
+          <GalleryItem imgUrl='https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg' link='/photography'/>
+          <GalleryItem imgUrl='https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg' link='/music'/>
         </tr>
       </table>
     </div>
   )
 }
 
-const NavigationItem = (props) => {
+const GalleryItem = (props) => {
   return (
     <td style={{padding:'0px'}}>
       <div>
@@ -70,7 +70,7 @@ const App = () => {
     <div>
       <TopBar />
       <Intro />
-      <NavigationBar />
+      <HorizontalGallery />
       <Footer />
     </div>
   )
