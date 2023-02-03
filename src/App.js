@@ -1,5 +1,5 @@
 import React from 'react'
-import icon from '../images/BCF53896-2618-4296-98F6-380BC1A2B854.gif'
+import icon from '../images/icon.gif'
 import resume from '../files/Nov_2022.pdf'
 
 const TopBar = () => {
