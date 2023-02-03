@@ -1,6 +1,6 @@
 import React from 'react'
 import icon from '../images/icon.gif'
-import resume from '../files/Nov_2022.pdf'
+import resume from '../files/Feb_2023.pdf'
 
 const TopBar = () => {
   return (
