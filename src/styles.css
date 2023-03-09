@@ -7,20 +7,17 @@ footer {
 }
 body {
   margin: 0;
-  height: 100vh;
 }
 
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 /* TODO: chrome/safari scroll bar is turned off bc its ugly. make it nice. */
 .navBar::-webkit-scrollbar { 
   display: none;  /* Safari and Chrome */
-}
-
-.navPic {
-  padding:1px 1px 1px 0px;
-  object-fit: cover;
-  height: 50vh;
-  max-width: 50vh;
 }
 
 table {
@@ -51,12 +48,6 @@ body {
 }
 body .is-layout-flex {
   gap: 24px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-}
-body .is-layout-flex > * {
-  margin: 0;
 }
 a {
   color: #e3bcaf;

@@ -4,20 +4,24 @@ import resume from '../files/Feb_2023.pdf'
 
 const TopBar = () => {
   return (
-    <div className="top-block">
-      <div className="is-layout-flex" style={{ flexWrap: 'nowrap', display: 'flex', padding: '2.25rem', paddingBottom: '.25rem' }}>
+    <div className="top-block" style={{paddingRight:'10px'}}>
+      <div className="is-layout-flex centered" style={{ display: 'flex', padding: '2.25rem', paddingBottom: '0rem', marginLeft: '40px', marginRight: '50px'}}>
+        <div style={{ marginLeft: '0px' }}>
         <a href="index.html">
-          <img decoding="async" src={icon} alt="me" width="112" height="112" />
+          <img decoding="async" src={icon} alt="me" width="100" height="100" />
         </a>
-        <div className="is-layout-flex">
-          <h2>josh cullen</h2>
         </div>
-        <p style={{ textAlign: 'right', textUnderlineOffset: '2px' }}>
+        <div style={{minWidth: '133.5px', paddingLeft: '10px', paddingRight: '10px'}}>
+          <h2 style={{fontSize: '25px'}}>josh cullen</h2>
+        </div>
+        <div>
+        <p style={{ textAlign: 'right', textUnderlineOffset: '2px', paddingRight: '0px' }}>
           <a href="https://github.com/joshcull3n">github</a><br/>
           <a href="https://soundcloud.com/mrmoooon">soundcloud</a><br/>
           <a href="https://twitter.com/joshcull3n">twitter</a><br/>
           <a href="https://www.linkedin.com/in/jlcullen/">linkedin</a>
         </p>
+        </div>
       </div>
     </div>
   )
@@ -25,7 +29,7 @@ const TopBar = () => {
 
 const Intro = () => {
   return (
-    <div className="is-layout-flex" style={{ paddingLeft: '2.25rem', minWidth: '71px' }}>
+    <div className="is-layout-flex centered" style={{marginLeft: '0px'}}>
       <p>los angeles based software guy. currently head of QA at <a href="https://www.gridspace.com/">Gridspace</a>.</p>
     </div>
   )
