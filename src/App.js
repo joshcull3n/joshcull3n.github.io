@@ -4,15 +4,13 @@ import resume from '../files/Feb_2023.pdf'
 
 const TopBar = () => {
   return (
-    <div className="top-block" style={{paddingRight:'10px'}}>
-      <div className="is-layout-flex centered" style={{ display: 'flex', padding: '2.25rem', paddingBottom: '0rem', marginLeft: '40px', marginRight: '50px'}}>
-        <div style={{ marginLeft: '0px' }}>
+    <div className="top-block" style={{paddingRight:'0px'}}>
+      <div className="is-layout-flex centered" style={{ display: 'flex', padding: '2.25rem', paddingBottom: '0rem', marginLeft: '40px', marginRight: '55px'}}>
         <a href="index.html">
-          <img decoding="async" src={icon} alt="me" width="100" height="100" />
+          <img decoding="async" src={icon} alt="me" width="90" height="90" />
         </a>
-        </div>
-        <div style={{minWidth: '133.5px', paddingLeft: '10px', paddingRight: '10px'}}>
-          <h2 style={{fontSize: '25px'}}>josh cullen</h2>
+        <div style={{width:'140px', minWidth: '133.5px', paddingLeft: '10px', paddingRight: '20px', textAlign: 'center'}}>
+          <h2 style={{fontSize: '22px'}}>josh<br/>cullen</h2>
         </div>
         <div>
         <p style={{ textAlign: 'right', textUnderlineOffset: '2px', paddingRight: '0px' }}>
@@ -23,14 +21,15 @@ const TopBar = () => {
         </p>
         </div>
       </div>
+      <Intro />
     </div>
   )
 }
 
 const Intro = () => {
   return (
-    <div className="is-layout-flex centered" style={{marginLeft: '0px'}}>
-      <p>los angeles based software guy. currently head of QA at <a href="https://www.gridspace.com/">Gridspace</a>.</p>
+    <div className="is-layout-flex centered" style={{marginTop:'0px'}}>
+      <p style={{textAlign:'center', marginTop: '0px'}}>los angeles based software guy.<br/>currently head of QA at <a href="https://www.gridspace.com/">Gridspace</a>.</p>
     </div>
   )
 }
@@ -73,7 +72,6 @@ const App = () => {
   return (
     <div>
       <TopBar />
-      <Intro />
       <Footer />
     </div>
   )
