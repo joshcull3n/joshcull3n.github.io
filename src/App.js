@@ -53,7 +53,6 @@ const HorizontalGallery = (props) => {
       <table className='navBar'>
         <tr>
           <GalleryItem imgUrl={todo_video} link='https://github.com/joshcull3n/todo'/>
-          <GalleryItem imgUrl='https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg' link=''/>
         </tr>
       </table>
     </div>
@@ -64,7 +63,7 @@ const GalleryItem = (props) => {
   return (
     <td style={{padding:'0px', paddingRight: '5px'}}>
       <div>
-        <a href={props.link}><img className='navPic' alt='gallery item thumbnail' style={{maxHeight:'40vh', maxWidth: '90vw'}} src={props.imgUrl}/></a>
+        <a href={props.link}><img className='navPic' alt='gallery item thumbnail' style={{maxHeight:'400px', maxWidth: '90vw'}} src={props.imgUrl}/></a>
       </div>
     </td>
   )
