@@ -1,5 +1,5 @@
 footer {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   height: 20px;
   padding-left: 20px;
@@ -23,7 +23,6 @@ body {
 table {
   overflow-x: scroll;
   display: flex;  
-  padding-left: 2.1rem;
   margin-top: 1rem;
   height: 69%
 }

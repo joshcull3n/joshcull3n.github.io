@@ -1,6 +1,7 @@
 import React from 'react'
 import icon from '../images/icon.gif'
 import resume from '../files/Feb_2023.pdf'
+import todo_video from '../images/todo_video.gif'
 
 const TopBar = () => {
   return (
@@ -40,20 +41,18 @@ const Footer = () => {
   return (
     <footer className="footer" style={{ padding: '1rem 0 1rem', width: '100%', textAlign: 'center'}}>
       <div>
-        <a href={resume}>peruse my resume</a>
+        <a style={{backgroundColor:'rgba(0,0,0,0.3)', padding: '0 3px 3px 3px'}} href={resume}>peruse my resume</a>
       </div>
     </footer>
   )
 }
 
-const HorizontalGallery = () => {
+const HorizontalGallery = (props) => {
   return (
-    <div>
+    <div className="centered" style={{padding:'15px'}}>
       <table className='navBar'>
         <tr>
-          <GalleryItem imgUrl='https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg' link='/projects'/>
-          <GalleryItem imgUrl='https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg' link='/photography'/>
-          <GalleryItem imgUrl='https://www.rd.com/wp-content/uploads/2020/11/GettyImages-889552354-e1606774439626.jpg' link='/music'/>
+          <GalleryItem imgUrl={todo_video} link='https://github.com/joshcull3n/todo'/>
         </tr>
       </table>
     </div>
@@ -62,9 +61,9 @@ const HorizontalGallery = () => {
 
 const GalleryItem = (props) => {
   return (
-    <td style={{padding:'0px'}}>
+    <td style={{padding:'0px', paddingRight: '5px'}}>
       <div>
-        <a href={props.link}><img className='navPic' alt='gallery item thumbnail' src={props.imgUrl}/></a>
+        <a href={props.link}><img className='navPic' alt='gallery item thumbnail' style={{maxHeight:'50vh'}} src={props.imgUrl}/></a>
       </div>
     </td>
   )
@@ -74,6 +73,7 @@ const App = () => {
   return (
     <div>
       <TopBar />
+      <HorizontalGallery title='projects'/>
       <Footer />
     </div>
   )
