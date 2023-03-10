@@ -20,6 +20,23 @@ body {
   display: none;  /* Safari and Chrome */
 }
 
+.galleryDiv:hover .text-fade {
+  visibility: visible;
+  opacity: 1;
+  transition: all 0.1s ease-out;
+}
+
+.galleryDiv:hover .galleryItem {
+  -webkit-filter: brightness(50%);
+  transition: all 0.2s ease;
+}
+
+.text-fade {
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.1s ease-out;
+}
+
 table {
   overflow-x: scroll;
   display: flex;  

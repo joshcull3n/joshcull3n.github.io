@@ -52,7 +52,7 @@ const HorizontalGallery = (props) => {
     <div className="centered" style={{padding:'15px'}}>
       <table className='navBar'>
         <tr>
-          <GalleryItem imgUrl={todo_video} link='https://github.com/joshcull3n/todo'/>
+          <GalleryItem imgUrl={todo_video} link='https://github.com/joshcull3n/todo' title='todo'/>
         </tr>
       </table>
     </div>
@@ -61,9 +61,14 @@ const HorizontalGallery = (props) => {
 
 const GalleryItem = (props) => {
   return (
-    <td style={{padding:'0px', paddingRight: '5px'}}>
-      <div>
-        <a href={props.link}><img className='navPic' alt='gallery item thumbnail' style={{maxHeight:'400px', maxWidth: '90vw'}} src={props.imgUrl}/></a>
+    <td style={{padding:'10px', paddingRight: '5px'}}>
+      <div className='galleryDiv'>
+        <a className='galleryItem' href={props.link}>
+          <img className='navPic' alt='gallery item thumbnail' style={{maxHeight:'400px', maxWidth: '90vw'}} src={props.imgUrl}/>
+        </a>
+        <div className='centered text-fade'>
+          <a href={props.link} className='galleryText'>{props.title}</a>
+        </div>
       </div>
     </td>
   )
