@@ -17,7 +17,6 @@ const TopBar = () => {
         <p style={{ textAlign: 'right', textUnderlineOffset: '2px', paddingRight: '0px' }}>
           <a href="https://github.com/joshcull3n">github</a><br/>
           <a href="https://soundcloud.com/mrmoooon">soundcloud</a><br/>
-          <a href="https://twitter.com/joshcull3n">twitter</a><br/>
           <a href="https://www.linkedin.com/in/jlcullen/">linkedin</a>
         </p>
         </div>
