@@ -1,7 +1,7 @@
 import React from 'react'
 import icon from '../images/icon.gif'
 import resume from '../files/Feb_2023.pdf'
-import todo_video from '../images/todo_video.gif'
+import todo_gif from '../images/todo.gif'
 import todo_webm from '../images/todo.webm'
 
 const TopBar = () => {
@@ -48,15 +48,29 @@ const Footer = () => {
 }
 
 const HorizontalGallery = (props) => {
-  return (
-    <div className="centered" style={{padding:'15px'}}>
-      <table className='navBar'>
-        <tr>
-          <GalleryVideo video={todo_webm} link='https://github.com/joshcull3n/todo' title='todo'/>
-        </tr>
-      </table>
-    </div>
-  )
+  console.log('mobile: ', props.mobile)
+  if (props.mobile) {
+    return (
+      <div className="centered" style={{padding:'15px'}}>
+        <table className='navBar'>
+          <tr>
+            <GalleryItem imgUrl={todo_gif} link='https://github.com/joshcull3n/todo' title='todo'/>
+          </tr>
+        </table>
+      </div>
+    )
+  }
+  else {
+    return (
+      <div className="centered" style={{padding:'15px'}}>
+        <table className='navBar'>
+          <tr>
+            <GalleryVideo video={todo_webm} link='https://github.com/joshcull3n/todo' title='todo'/>
+          </tr>
+        </table>
+      </div>
+    )
+  }
 }
 
 const GalleryItem = (props) => {
@@ -79,7 +93,7 @@ const GalleryVideo = (props) => {
     <td style={{padding:'10px', paddingRight: '5px'}}>
       <div className='galleryDiv'>
         <a className='galleryItem' href={props.link}>
-          <video src={props.video} style={{maxHeight:'400px', maxWidth: '90vw'}} autoplay="" loop="true" muted="true" className='navPic' alt='gallery item thumbnail'/>
+          <video src={props.video} style={{maxHeight:'400px', maxWidth: '90vw'}} autoPlay="true" loop="true" muted="true" className='navPic' alt='gallery item thumbnail'/>
         </a>
         <div className='centered text-fade'>
           <a href={props.link} className='galleryText'>{props.title}</a>
@@ -89,11 +103,16 @@ const GalleryVideo = (props) => {
   )
 }
 
+
 const App = () => {
+  var agnt = window.navigator.userAgent.toLowerCase()
+  var mobile = false;
+  if (agnt.includes('ipad') || agnt.includes('iphone') || agnt.includes('android') || agnt.includes('blackberry') || agnt.includes('webOS'))
+    mobile = true
   return (
     <div>
       <TopBar />
-      <HorizontalGallery title='projects'/>
+      <HorizontalGallery title='projects' mobile={mobile}/>
       <Footer />
     </div>
   )
