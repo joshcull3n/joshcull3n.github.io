@@ -2,6 +2,7 @@ import React from 'react'
 import icon from '../images/icon.gif'
 import resume from '../files/Feb_2023.pdf'
 import todo_video from '../images/todo_video.gif'
+import todo_webm from '../images/todo.webm'
 
 const TopBar = () => {
   return (
@@ -51,7 +52,7 @@ const HorizontalGallery = (props) => {
     <div className="centered" style={{padding:'15px'}}>
       <table className='navBar'>
         <tr>
-          <GalleryItem imgUrl={todo_video} link='https://github.com/joshcull3n/todo' title='todo'/>
+          <GalleryVideo video={todo_webm} link='https://github.com/joshcull3n/todo' title='todo'/>
         </tr>
       </table>
     </div>
@@ -64,6 +65,21 @@ const GalleryItem = (props) => {
       <div className='galleryDiv'>
         <a className='galleryItem' href={props.link}>
           <img className='navPic' alt='gallery item thumbnail' style={{maxHeight:'400px', maxWidth: '90vw'}} src={props.imgUrl}/>
+        </a>
+        <div className='centered text-fade'>
+          <a href={props.link} className='galleryText'>{props.title}</a>
+        </div>
+      </div>
+    </td>
+  )
+}
+
+const GalleryVideo = (props) => {
+  return (
+    <td style={{padding:'10px', paddingRight: '5px'}}>
+      <div className='galleryDiv'>
+        <a className='galleryItem' href={props.link}>
+          <video src={props.video} style={{maxHeight:'400px', maxWidth: '90vw'}} autoplay="" loop="true" muted="true" className='navPic' alt='gallery item thumbnail'/>
         </a>
         <div className='centered text-fade'>
           <a href={props.link} className='galleryText'>{props.title}</a>
