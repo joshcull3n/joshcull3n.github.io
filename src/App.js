@@ -103,7 +103,7 @@ const GalleryVideo = (props) => {
   )
 }
 
-const DetectDevice = (props) => {
+function DetectDevice() {
   var agnt = window.navigator.userAgent.toLowerCase()
   var isIpad = /Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints && navigator.maxTouchPoints > 1;
   var mobile = false;
@@ -119,7 +119,7 @@ const App = () => {
   return (
     <div>
       <TopBar />
-      <HorizontalGallery title='projects' mobile={DetectDevice}/>
+      <HorizontalGallery title='projects' mobile={DetectDevice()}/>
       <Footer />
     </div>
   )
