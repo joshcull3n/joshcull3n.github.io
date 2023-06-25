@@ -78,7 +78,7 @@ const GalleryItem = (props) => {
     <td style={{padding:'10px', paddingRight: '5px'}}>
       <div className='galleryDiv'>
         <a className='galleryItem' href={props.link}>
-          <img className='navPic' alt='gallery item thumbnail' style={{maxHeight:'400px', maxWidth: '90vw'}} src={props.imgUrl}/>
+          <img alt='gallery item thumbnail' style={{maxHeight:'400px', maxWidth: '90vw'}} src={props.imgUrl}/>
         </a>
         <div className='centered text-fade'>
           <a href={props.link} className='galleryText'>{props.title}</a>
@@ -103,16 +103,23 @@ const GalleryVideo = (props) => {
   )
 }
 
+const DetectDevice = (props) => {
+  var agnt = window.navigator.userAgent.toLowerCase()
+  var isIpad = /Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints && navigator.maxTouchPoints > 1;
+  var mobile = false;
+
+  if (agnt.includes('ipad') || agnt.includes('iphone') || agnt.includes('android') || agnt.includes('blackberry') || agnt.includes('webOS') || isIpad)
+    mobile = true
+
+  return mobile
+}
+
 
 const App = () => {
-  var agnt = window.navigator.userAgent.toLowerCase()
-  var mobile = false;
-  if (agnt.includes('ipad') || agnt.includes('iphone') || agnt.includes('android') || agnt.includes('blackberry') || agnt.includes('webOS'))
-    mobile = true
   return (
     <div>
       <TopBar />
-      <HorizontalGallery title='projects' mobile={mobile}/>
+      <HorizontalGallery title='projects' mobile={DetectDevice}/>
       <Footer />
     </div>
   )
