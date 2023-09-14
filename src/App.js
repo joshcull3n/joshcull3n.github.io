@@ -54,10 +54,13 @@ const HorizontalGallery = (props) => {
     return (
       <div className="centered" style={{padding:'15px'}}>
         <table className='navBar'>
-          <tr>
-            <GalleryItem imgUrl={todo_gif} link='/habits' title='habits' />
-            <GalleryItem imgUrl={todo_gif} link='https://github.com/joshcull3n/todo' title='todo'/>
-          </tr>
+          <tbody>
+            <tr>
+              <td style={{paddingRight:'15px'}}><em><p style={{fontSize:'20px'}}>projects</p></em></td>
+              <td className='galleryTd'><GalleryItem imgUrl={habits_pic} link='/habits' title='habits' /></td>
+              <td className='galleryTd'><GalleryItem imgUrl={todo_gif} link='https://github.com/joshcull3n/todo' title='todo'/></td>
+            </tr>
+          </tbody>
         </table>
       </div>
     )
@@ -66,10 +69,12 @@ const HorizontalGallery = (props) => {
     return (
       <div className="centered" style={{padding:'15px'}}>
         <table className='navBar'>
-          <tr>
-            <GalleryItem imgUrl={habits_pic} link='/habits' title='habits' />
-            <GalleryVideo video={todo_webm} link='https://github.com/joshcull3n/todo' title='todo'/>
-          </tr>
+          <tbody>
+            <tr>
+              <td className='galleryTd'><GalleryItem imgUrl={habits_pic} link='/habits' title='habits' /></td>
+              <td className='galleryTd'><GalleryVideo video={todo_webm} link='https://github.com/joshcull3n/todo' title='todo'/></td>
+            </tr>
+          </tbody>
         </table>
       </div>
     )
@@ -78,31 +83,27 @@ const HorizontalGallery = (props) => {
 
 const GalleryItem = (props) => {
   return (
-    <td style={{padding:'10px', paddingRight: '5px'}}>
-      <div className='galleryDiv'>
-        <a className='galleryItem' href={props.link}>
-          <img alt='gallery item thumbnail' style={{maxHeight:'400px', maxWidth: '90vw'}} src={props.imgUrl}/>
-        </a>
-        <div className='centered text-fade'>
-          <a href={props.link} className='galleryText'>{props.title}</a>
-        </div>
+    <div className='galleryDiv'>
+      <a className='galleryItem' href={props.link}>
+        <img alt='gallery item thumbnail' style={{maxHeight:'400px', maxWidth: '90vw'}} src={props.imgUrl}/>
+      </a>
+      <div className='centered text-fade'>
+        <a href={props.link} className='galleryText'>{props.title}</a>
       </div>
-    </td>
+    </div>
   )
 }
 
 const GalleryVideo = (props) => {
   return (
-    <td style={{padding:'10px', paddingRight: '5px'}}>
-      <div className='galleryDiv'>
-        <a className='galleryItem' href={props.link}>
-          <video src={props.video} style={{maxHeight:'400px', maxWidth: '90vw'}} autoPlay="true" loop="true" muted="true" className='navPic' alt='gallery item thumbnail'/>
-        </a>
-        <div className='centered text-fade'>
-          <a href={props.link} className='galleryText'>{props.title}</a>
-        </div>
+    <div className='galleryDiv'>
+      <a className='galleryItem' href={props.link}>
+        <video src={props.video} style={{maxHeight:'400px', maxWidth: '90vw'}} autoPlay={true} loop={true} muted={true} className='navPic' alt='gallery item thumbnail'/>
+      </a>
+      <div className='centered text-fade'>
+        <a href={props.link} className='galleryText'>{props.title}</a>
       </div>
-    </td>
+    </div>
   )
 }
 
