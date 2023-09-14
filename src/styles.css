@@ -33,7 +33,7 @@ body {
 
 .galleryDiv:hover .galleryItem video {
   -webkit-filter: brightness(50%);
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .text-fade {
@@ -57,8 +57,8 @@ body {
 }
 
 .galleryDiv:hover .galleryItem {
-  filter: drop-shadow(0px 0px 5px #e3bcafEE);
-  transition: all 1s ease;
+  filter: drop-shadow(0px 0px 3px #e3bcafBB);
+  transition: all 0.3s ease;
 }
 
 .galleryDiv video {
