@@ -3,6 +3,7 @@ import icon from '../images/icon.gif'
 import resume from '../files/Sept_2023.pdf'
 import todo_gif from '../images/todo.gif'
 import todo_webm from '../images/todo.webm'
+import habits_pic from '../images/habits.png'
 
 const TopBar = () => {
   return (
@@ -54,6 +55,7 @@ const HorizontalGallery = (props) => {
       <div className="centered" style={{padding:'15px'}}>
         <table className='navBar'>
           <tr>
+            <GalleryItem imgUrl={todo_gif} link='/habits' title='habits' />
             <GalleryItem imgUrl={todo_gif} link='https://github.com/joshcull3n/todo' title='todo'/>
           </tr>
         </table>
@@ -65,6 +67,7 @@ const HorizontalGallery = (props) => {
       <div className="centered" style={{padding:'15px'}}>
         <table className='navBar'>
           <tr>
+            <GalleryItem imgUrl={habits_pic} link='/habits' title='habits' />
             <GalleryVideo video={todo_webm} link='https://github.com/joshcull3n/todo' title='todo'/>
           </tr>
         </table>
