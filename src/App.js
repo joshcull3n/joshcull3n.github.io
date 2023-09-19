@@ -32,7 +32,9 @@ const Intro = () => {
   return (
     <div className="is-layout-flex centered" style={{marginTop:'0px', marginLeft:'5px'}}>
     <div style={{width: '405px',justifyContent: 'left', alignItems:'left'}}>
-      <p style={{textAlign:'left', marginTop: '0px'}}>los angeles based software guy.<br/>currently head of QA at <a href="https://www.gridspace.com/">Gridspace</a>.</p>
+      <p style={{textAlign:'left', marginTop: '0px'}}>los angeles based web & automation dev.
+        <br/>currently head of QA at <a href="https://www.gridspace.com/">Gridspace</a>.
+        </p>
     </div>
     </div>
   )
