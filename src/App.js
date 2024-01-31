@@ -4,23 +4,28 @@ import resume from '../files/Sept_2023.pdf'
 import todo_gif from '../images/todo.gif'
 import todo_webm from '../images/todo.webm'
 import habits_pic from '../images/habits.png'
+import './light.css'
+import './dark.css'
 
 const TopBar = () => {
   return (
-    <div className="top-block" style={{paddingRight:'0px'}}>
-      <div className="is-layout-flex centered" style={{ display: 'flex', padding: '2.25rem', paddingBottom: '0rem', marginLeft: '40px', marginRight: '55px'}}>
-        <a href="index.html">
-          <img decoding="async" src={icon} alt="me" width="100" height="100" />
-        </a>
-        <div style={{width:'140px', minWidth: '133.5px', paddingLeft: '10px', paddingRight: '20px', textAlign: 'center'}}>
-          <h2 style={{fontSize: '22px'}}>josh cullen</h2>
-        </div>
-        <div>
-        <p style={{ textAlign: 'right', textUnderlineOffset: '2px', paddingRight: '0px' }}>
-          <a href="https://github.com/joshcull3n">github</a><br/>
-          <a href="https://soundcloud.com/mrmoooon">soundcloud</a><br/>
-          <a href="https://www.linkedin.com/in/jlcullen/">linkedin</a>
-        </p>
+    <div>
+      <div className="is-layout-flex centered">
+        <div className="is-layout-flex centered topBar" style={{ margin: '0.5% 0px 0px 0px' }}>
+          <a href="index.html">
+            <img decoding="async" src={icon} alt="me" width="80" height="80" style={{ marginTop: '0.4rem', borderRadius: '3px' }} />
+          </a>
+          <div style={{width:'140px', minWidth: '133.5px', textAlign: 'center'}}>
+            <h2 style={{fontSize: '22px'}}>josh cullen</h2>
+          </div>
+          <div>
+          <p style={{ margin: 0, textAlign: 'right', textUnderlineOffset: '2px', paddingRight: '0px' }}>
+            <a href="https://github.com/joshcull3n">github</a><br/>
+            <a href="https://soundcloud.com/mrmoooon">soundcloud</a><br/>
+            <a href="https://www.linkedin.com/in/jlcullen/">linkedin</a><br/>
+            <a href={resume}>resume</a>
+          </p>
+          </div>
         </div>
       </div>
       <Intro />
@@ -30,13 +35,13 @@ const TopBar = () => {
 
 const Intro = () => {
   return (
-    <div className="is-layout-flex centered" style={{marginTop:'0px', marginLeft:'5px'}}>
-    <div style={{width: '405px',justifyContent: 'left', alignItems:'left'}}>
-      <p style={{textAlign:'left', marginTop: '0px'}}>los angeles based web & automation dev.
-        <br/>currently head of QA at <a href="https://www.gridspace.com/">Gridspace</a>.
-        </p>
-    </div>
-    </div>
+      <div className="is-layout-flex centered" style={{ }}>
+        <div className="introBar" style={{ borderRadius: '3px', marginTop: '0.3%' }}>
+          <p style={{marginTop: '0px', marginBottom: '1.5%', textAlign: 'center'}}>los angeles based web & automation dev.
+            <br/>currently head of QA at <a href="https://www.gridspace.com/">Gridspace</a>.
+            </p>
+        </div>
+      </div>
   )
 }
 
@@ -44,7 +49,6 @@ const Footer = () => {
   return (
     <footer className="footer" style={{ padding: '1rem 0 1rem', width: '100%', textAlign: 'center'}}>
       <div>
-        <a style={{backgroundColor:'rgba(0,0,0,0.3)', padding: '0 3px 3px 3px'}} href={resume}>peruse my resume</a>
       </div>
     </footer>
   )
@@ -122,6 +126,9 @@ function DetectDevice() {
 
 
 const App = () => {
+  // set body class
+  document.body.classList.add("darkMode");
+
   return (
     <div>
       <TopBar />

@@ -1,0 +1,21 @@
+.darkMode {
+  --main-font-color: #e3bcaf;
+  --top-bar-color: #e3bcaf;
+  --main-font-color-med-alpha: #e3bcafaa;
+  --main-font-color-high-alpha: #e3bcaf77;
+  --graph-grid-color: #e3bcaf5c;
+  --graph-line-color: #e3bcaf;
+  --graph-bg-color: #e3bcaf01;
+  --bg-color: black;
+  --calendar-font: monospace;
+  --textbox-placeholder-color: #e3bcaf77;
+  --sidebar-shadow: #ffffff15;
+  --drop-shadow: drop-shadow(0px 0px 5px #e3bcaf44);
+  --gallery-link-not-hovered: #e3bcaf;
+  --link-hover: #ffd1c2;
+  --link-color: #e5dbd7;
+}
+
+.darkMode .introBar {
+  padding: 0px;
+}
