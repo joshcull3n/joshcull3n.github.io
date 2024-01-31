@@ -107,7 +107,7 @@ body .is-layout-flex {
 }
 a {
   color: var(--link-color);
-  text-decoration: auto;
+  text-decoration: none;
 }
 a:hover {
   color: var(--link-hover);
