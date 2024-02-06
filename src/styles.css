@@ -10,8 +10,18 @@ body {
   margin: 0;
 }
 
+#habitsLink {
+  content: var(--habits-img);
+}
+
 .introBar {
   background-color: var(--intro-bg-color);
+  border-radius: 3px;
+  display: flex;
+}
+
+.introBar p {
+  text-align: center;
 }
 
 .topBar {
@@ -41,12 +51,12 @@ body {
 }
 
 .galleryDiv:hover .galleryItem img {
-  -webkit-filter: brightness(75%);
+  border: 2.5px solid var(--graph-line-color);
   transition: all 0.2s ease;
 }
 
 .galleryDiv:hover .galleryItem video {
-  -webkit-filter: brightness(75%);
+  border: 2.5px solid var(--graph-line-color);
   transition: all 0.3s ease;
 }
 
@@ -58,30 +68,30 @@ body {
 }
 
 .galleryDiv {
-  filter: drop-shadow(0px 0px 5px #e3bcaf44);
+  /*filter: drop-shadow(0px 0px 5px #e3bcaf44);*/
+  padding: 5px;
 }
 
 .galleryDiv img {
-  border-radius: 1.5%;
-  height: 300px;
+  border: 2.5px solid var(--gallery-img-border-color);
+  height: 50vh;
+  max-height: 500px;
+  border-radius: 15px;
 }
 
 .galleryDiv video {
-  border-radius: 1.5%;
-  height: 300px;
+  border: 2.5px solid var(--gallery-img-border-color);
+  height: 50vh;
+  max-height: 500px;
+  border-radius: 15px;
 }
 
 .galleryDiv:hover .galleryItem {
-  filter: var(--drop-shadow);
+  /*filter: var(--drop-shadow);*/
   transition: all 0.3s ease;
 }
 
-.galleryDiv video {
-  border-radius: 1.5%;
-}
-
 .galleryTd {
-  padding: 10px;
   padding-right: 5px;
 }
 

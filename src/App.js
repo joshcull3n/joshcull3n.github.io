@@ -11,7 +11,7 @@ const TopBar = () => {
   return (
     <div>
       <div className="is-layout-flex centered">
-        <div className="is-layout-flex centered topBar" style={{ margin: '0.5% 0px 0px 0px' }}>
+        <div className="is-layout-flex centered topBar" style={{ margin: '0.5rem 0px 0px 0px' }}>
           <a href="index.html">
             <img decoding="async" src={icon} alt="me" width="80" height="80" style={{ marginTop: '0.4rem', borderRadius: '3px' }} />
           </a>
@@ -63,8 +63,8 @@ const HorizontalGallery = (props) => {
           <tbody>
             <tr>
               <td style={{paddingRight:'15px'}}><em><p style={{fontSize:'20px'}}>projects</p></em></td>
-              <td className='galleryTd'><GalleryItem imgUrl={habits_pic} link='/habits' title='habits' /></td>
-              <td className='galleryTd'><GalleryItem imgUrl={todo_gif} link='https://github.com/joshcull3n/todo' title='todo'/></td>
+              <td className='galleryTd'><GalleryItem imgUrl={habits_pic} link='/habits' title='habits' imgId='habitsLink' mobile={true}/></td>
+              <td className='galleryTd'><GalleryItem imgUrl={todo_gif} link='https://github.com/joshcull3n/todo' title='todo' imgId='todoLink' mobile={true}/></td>
             </tr>
           </tbody>
         </table>
@@ -77,8 +77,8 @@ const HorizontalGallery = (props) => {
         <table className='navBar'>
           <tbody>
             <tr>
-              <td className='galleryTd'><GalleryItem imgUrl={habits_pic} link='/habits' title='habits' /></td>
-              <td className='galleryTd'><GalleryVideo video={todo_webm} link='https://github.com/joshcull3n/todo' title='todo'/></td>
+              <td className='galleryTd'><GalleryItem imgUrl={habits_pic} link='/habits' title='habits' imgId='habitsLink' mobile={false}/></td>
+              <td className='galleryTd'><GalleryVideo video={todo_webm} link='https://github.com/joshcull3n/todo' title='todo' imgId='todoLink' mobile={false}/></td>
             </tr>
           </tbody>
         </table>
@@ -88,10 +88,14 @@ const HorizontalGallery = (props) => {
 }
 
 const GalleryItem = (props) => {
+  let maxHeight = '500px';
+  if (props.mobile) {
+    maxHeight = '80vw'
+  }
   return (
     <div className='galleryDiv'>
       <a className='galleryItem' href={props.link}>
-        <img alt='gallery item thumbnail' style={{maxHeight:'400px', maxWidth: '90vw'}} src={props.imgUrl}/>
+        <img alt='gallery item thumbnail' style={{ maxHeight: maxHeight, maxWidth: '90vw' }} id={props.imgId} src={props.imgUrl}/>
       </a>
       <div className='centered text-fade'>
         <a href={props.link} className='galleryText'>{props.title}</a>
@@ -104,7 +108,7 @@ const GalleryVideo = (props) => {
   return (
     <div className='galleryDiv'>
       <a className='galleryItem' href={props.link}>
-        <video src={props.video} style={{maxHeight:'400px', maxWidth: '90vw'}} autoPlay={true} loop={true} muted={true} className='navPic' alt='gallery item thumbnail'/>
+        <video src={props.video} style={{}} autoPlay={true} loop={true} muted={true} className='navPic' alt='gallery item thumbnail'/>
       </a>
       <div className='centered text-fade'>
         <a href={props.link} className='galleryText'>{props.title}</a>

@@ -14,6 +14,8 @@
   --gallery-link-not-hovered: #e3bcaf;
   --link-hover: #ffd1c2;
   --link-color: #e5dbd7;
+  --habits-img: url("../images/habits_dark.png");
+  --gallery-img-border-color: #ffffff0e;
 }
 
 .darkMode .introBar {
