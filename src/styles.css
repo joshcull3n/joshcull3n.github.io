@@ -5,8 +5,27 @@ footer {
   padding-left: 20px;
   padding-bottom: 10px;
 }
+
 body {
   margin: 0;
+}
+
+#habitsLink {
+  content: var(--habits-img);
+}
+
+.introBar {
+  background-color: var(--intro-bg-color);
+  border-radius: 3px;
+  display: flex;
+}
+
+.introBar p {
+  text-align: center;
+}
+
+.topBar {
+  padding: 0.75% 0 0 0;
 }
 
 .centered {
@@ -21,52 +40,58 @@ body {
 }
 
 .galleryDiv:hover .text-fade {
+  color: var(--main-font-color);
   visibility: visible;
   opacity: 1;
   transition: all 0.1s ease-out;
 }
 
+.galleryDiv:hover .text-fade a {
+  color: var(--main-font-color);
+}
+
 .galleryDiv:hover .galleryItem img {
-  -webkit-filter: brightness(50%);
+  border: 2.5px solid var(--graph-line-color);
   transition: all 0.2s ease;
 }
 
 .galleryDiv:hover .galleryItem video {
-  -webkit-filter: brightness(50%);
+  border: 2.5px solid var(--graph-line-color);
   transition: all 0.3s ease;
 }
 
 .text-fade {
-  visibility: hidden;
-  opacity: 0;
+  visibility: visible;
+  opacity: 0.5;
   transition: all 0.1s ease-out;
+  color: pink;
 }
 
 .galleryDiv {
-  filter: drop-shadow(0px 0px 5px #e3bcaf44);
+  /*filter: drop-shadow(0px 0px 5px #e3bcaf44);*/
+  padding: 5px;
 }
 
 .galleryDiv img {
-  border-radius: 1.5%;
-  height: 300px;
+  border: 2.5px solid var(--gallery-img-border-color);
+  height: 50vh;
+  max-height: 500px;
+  border-radius: 15px;
 }
 
 .galleryDiv video {
-  border-radius: 1.5%;
-  height: 300px;
+  border: 2.5px solid var(--gallery-img-border-color);
+  height: 50vh;
+  max-height: 500px;
+  border-radius: 15px;
 }
 
 .galleryDiv:hover .galleryItem {
-  filter: drop-shadow(0px 0px 3px #e3bcafBB);
+  /*filter: var(--drop-shadow);*/
   transition: all 0.3s ease;
 }
 
-.galleryDiv video {
-  border-radius: 1.5%;
-}
-
 .galleryTd {
-  padding: 10px;
   padding-right: 5px;
 }
 
@@ -77,19 +102,11 @@ table {
   height: 69%
 }
 
-.top-block > * {
-  margin-block-start: 0;
-  margin-block-end: 0;
-}
-.top-block > * + * {
-  margin-block-start: 24px;
-}
 body {
   --font-size--huge: 2.375rem;
   --spacing--60: 2.25rem;
-
-  background-color: black;
-  color: #e3bcaf;
+  background-color: var(--bg-color);
+  color: var(--main-font-color);
   font-family: "Work Sans";
   font-size: 0.85em;
   line-height: 1.5;
@@ -99,11 +116,11 @@ body .is-layout-flex {
   gap: 24px;
 }
 a {
-  color: #e3bcaf;
-  text-decoration: underline;
+  color: var(--link-color);
+  text-decoration: none;
 }
 a:hover {
-  color: #a1857c;
+  color: var(--link-hover);
 }
 h1 {
   font-size: var(--font-size--gigantic);

@@ -1,0 +1,25 @@
+.lightMode {
+  --main-font-color: #000000;
+  --top-bar-color: #9f9f9f40;
+  --main-font-color-med-alpha: #505050aa;
+  --main-font-color-high-alpha: #5050503b;
+  --graph-grid-color: #00000041;
+  --graph-line-color: #f79b9b;
+  --graph-bg-color: #f79b9b;
+  --bg-color: #f0f2f5;
+  --calendar-font: monospace;
+  --textbox-bg: rgba(151, 151, 151, 0.05);
+  --textbox-placeholder-color: rgba(0, 0, 0, 0.7);
+  --sidebar-shadow: #f79b9b1F;
+  --drop-shadow: drop-shadow(0px 0px 5px #f79b9b);
+  --gallery-link-not-hovered: #f79b9b;
+  --link-hover: #f79b9b;
+  --link-color: #4d4d4d;
+  --intro-bg-color: #f79b9ba6;
+  --habits-img: url("../images/habits_light.png");
+  --gallery-img-border-color: #0000000e;
+}
+
+.lightMode .introBar {
+  padding: 0.5% 2% 0%;
+}
