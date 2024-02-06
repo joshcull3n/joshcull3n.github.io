@@ -8,10 +8,26 @@ footer {
 
 body {
   margin: 0;
+  --sidebar-padding-left: 50px;
+}
+
+.mobile {
+  --sidebar-padding-left: 10px;
 }
 
 #habitsLink {
   content: var(--habits-img);
+}
+
+#lightModeSwitch {
+  width: 25px;
+  height: 25px;
+  cursor:pointer;
+  position: relative;
+  top: 0px;
+  background: url("../images/lightbulb.svg");
+  background-size: 20px;
+  opacity: 1;
 }
 
 .introBar {
@@ -93,6 +109,35 @@ body {
 
 .galleryTd {
   padding-right: 5px;
+}
+
+.stickyContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: 100%;
+  z-index: 0;
+}
+
+.sidebar {
+  position: sticky;
+  top: 25px;
+  padding-left: var(--sidebar-padding-left);
+}
+
+.sidebarOption {
+  padding: 8px 0px 5px;
+  opacity: 0.4;
+  display: flex;
+  justify-content: center;
+  -webkit-transition: opacity 0.1s ease-in-out;
+  -moz-transition: opacity 0.1s ease-in-out;
+  transition: opacity 0.1s ease-in-out;
+}
+
+.sidebarOption:hover {
+  opacity: 1;
 }
 
 table {

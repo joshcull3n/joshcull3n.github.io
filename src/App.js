@@ -1,4 +1,6 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import { Context } from './Context';
+
 import icon from '../images/icon.gif'
 import resume from '../files/Sept_2023.pdf'
 import todo_gif from '../images/todo.gif'
@@ -42,6 +44,34 @@ const Intro = () => {
             </p>
         </div>
       </div>
+  )
+}
+
+const Sidebar = () => {
+  const { lightMode, setLightMode } = useContext(Context);
+
+  const handleLightMode = (e) => {
+    if (lightMode) {
+      localStorage.setItem('lightMode_cullen', '');
+      setLightMode(false);
+    }
+    else {
+      localStorage.setItem('lightMode_cullen', 'true');
+      setLightMode(true);
+    }
+  }
+
+  return (
+    <div className='stickyContainer'>
+      <div className="sidebar">
+        <div id="sidebarShadow">
+          <div className="sidebarOption">
+            <input type="checkbox" onChange={handleLightMode} id="lightModeSwitch"/>
+            <label htmlFor="lightModeSwitch"></label>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 
@@ -130,11 +160,19 @@ function DetectDevice() {
 
 
 const App = () => {
+  const { lightMode, setLightMode } = useContext(Context);
+
   // set body class
-  document.body.classList.add("darkMode");
+  document.body.classList.remove('lightMode');
+  document.body.classList.remove('darkMode');
+  if (lightMode)
+    document.body.classList.add("lightMode");
+  else
+    document.body.classList.add('darkMode');
 
   return (
     <div>
+      <Sidebar />
       <TopBar />
       <HorizontalGallery title='projects' mobile={DetectDevice()}/>
       <Footer />
