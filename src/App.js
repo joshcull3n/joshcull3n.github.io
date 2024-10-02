@@ -37,7 +37,9 @@ const Intro = () => {
   return (
       <div className="is-layout-flex centered" style={{ }}>
         <div className="introBar" style={{ borderRadius: '3px', marginTop: '0.3%' }}>
-          <p style={{marginTop: '0px', marginBottom: '1.5%', textAlign: 'center'}}>los angeles based web & automation dev.
+          <p style={{marginTop: '0px', marginBottom: '1.5%', textAlign: 'center'}}>
+            los angeles based web & automation dev.
+            <br/>surfer, musician, & lover of creative software.
             <br/>currently head of QA at <a href="https://www.gridspace.com/">Gridspace</a>.
             </p>
         </div>
