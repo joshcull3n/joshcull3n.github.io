@@ -79,7 +79,7 @@ const HorizontalGallery = (props) => {
         <table className='navBar'>
           <tbody>
             <tr>
-              <td className='galleryTd'><GalleryItem imgUrl={habits_pic} link='/habits' title='habits' imgId='habitsLink' mobile={false}/></td>
+              <td className='galleryTd'><GalleryItem imgUrl={habits_pic} link='/stuff' title='stuff' imgId='habitsLink' mobile={false}/></td>
               <td className='galleryTd'><GalleryVideo video={todo_webm} link='https://github.com/joshcull3n/todo' title='todo' imgId='todoLink' mobile={false}/></td>
             </tr>
           </tbody>
