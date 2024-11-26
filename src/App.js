@@ -65,7 +65,7 @@ const HorizontalGallery = (props) => {
           <tbody>
             <tr>
               <td style={{paddingRight:'15px'}}><em><p style={{fontSize:'20px'}}>projects</p></em></td>
-              <td className='galleryTd'><GalleryItem imgUrl={habits_pic} link='/habits' title='habits' imgId='habitsLink' mobile={true}/></td>
+              <td className='galleryTd'><GalleryItem imgUrl={habits_pic} link='/stuff' title='stuff' imgId='habitsLink' mobile={true}/></td>
               <td className='galleryTd'><GalleryItem imgUrl={todo_gif} link='https://github.com/joshcull3n/todo' title='todo' imgId='todoLink' mobile={true}/></td>
             </tr>
           </tbody>
