@@ -6,6 +6,10 @@ footer {
   padding-bottom: 10px;
 }
 
+.footer > a {
+  padding: 0 2.5px;
+}
+
 body {
   margin: 0;
 }

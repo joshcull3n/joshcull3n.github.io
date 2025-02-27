@@ -20,9 +20,10 @@ const TopBar = () => {
           </div>
           <div>
           <p style={{ margin: 0, textAlign: 'right', textUnderlineOffset: '2px', paddingRight: '0px' }}>
+            {/* <a href={'/blog'}>blog</a><br/> */}
             <a href="https://github.com/joshcull3n">github</a><br/>
-            <a href="https://soundcloud.com/mrmoooon">soundcloud</a><br/>
             <a href="https://www.linkedin.com/in/jlcullen/">linkedin</a><br/>
+            <a href="https://soundcloud.com/mrmoooon">soundcloud</a><br/>
             <a href={resume}>resume</a>
           </p>
           </div>
@@ -49,9 +50,10 @@ const Intro = () => {
 
 const Footer = () => {
   return (
-    <footer className="footer" style={{ padding: '1rem 0 1rem', width: '100%', textAlign: 'center'}}>
-      <div>
-      </div>
+    <footer className="footer" style={{ padding: '1rem 0 1rem', width: '100%', textAlign: 'center', fontSize: 'xx-small'}}>
+      <a href={resume}>resume</a>
+      <a href="https://github.com/joshcull3n">github</a>
+      <a href="https://www.linkedin.com/in/jlcullen/">linkedin</a><br/>
     </footer>
   )
 }
