@@ -1,6 +1,6 @@
 import React from 'react'
 import icon from '../images/icon.gif'
-import resume from '../files/Sept_2023.pdf'
+import resume from '../files/resume.pdf'
 import todo_gif from '../images/todo.gif'
 import todo_webm from '../images/todo.webm'
 import habits_pic from '../images/habits.png'
