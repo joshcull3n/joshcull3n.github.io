@@ -1,0 +1,289 @@
+@font-face {
+  font-family: 'Departure Mono';
+  src: url('../fonts/DepartureMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+
+body {
+  margin: 0;
+  background: #000;
+}
+
+.page {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+.water {
+  position: absolute;
+  inset: 0;
+}
+
+.panel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 300px;
+  padding: 16px 18px 40px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.82);
+  border-left: 1px solid rgba(255, 255, 255, 0.25);
+  font-family: 'Departure Mono', ui-monospace, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #fff;
+  backdrop-filter: blur(2px);
+}
+
+.panel.is-hidden {
+  display: none;
+}
+
+.hint {
+  margin: 0 0 16px;
+  opacity: 0.55;
+  font-size: 11px;
+}
+
+.group {
+  margin: 0 0 18px;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  padding-top: 10px;
+}
+
+.legend {
+  padding: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 4px 8px;
+  margin-bottom: 7px;
+}
+
+.row label {
+  font-size: 12px;
+}
+
+.value {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.7;
+  font-size: 11px;
+}
+
+.row input[type='range'] {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin: 0;
+  accent-color: #fff;
+}
+
+.row input[type='color'] {
+  width: 100%;
+  height: 22px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: none;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.btn {
+  flex: 1 1 auto;
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: transparent;
+  color: #fff;
+  font-family: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* A tilde in front of a param label means an LFO is driving it — its slider
+   now sets the centre of the swing rather than the value you see on screen. */
+.mod-dot {
+  margin-right: 4px;
+  color: #7fd4ff;
+}
+
+.lfo {
+  margin: 10px 0;
+  padding: 8px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.lfo-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.lfo-name {
+  flex: 1 1 auto;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.65;
+}
+
+.lfo-enable {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  opacity: 0.75;
+  cursor: pointer;
+}
+
+.lfo-enable input {
+  margin: 0;
+  accent-color: #7fd4ff;
+}
+
+.btn--tiny {
+  flex: 0 0 auto;
+  padding: 0 6px;
+  line-height: 18px;
+}
+
+.select {
+  grid-column: 2;
+  justify-self: end;
+  max-width: 150px;
+  padding: 2px 4px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: #000;
+  color: #fff;
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.toggle {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 10;
+  padding: 2px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-family: 'Departure Mono', ui-monospace, monospace;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.fps {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  z-index: 10;
+  padding: 3px 7px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  font-family: 'Departure Mono', ui-monospace, monospace;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.more {
+  margin-top: 2px;
+}
+
+.more > summary {
+  margin-bottom: 7px;
+  font-size: 11px;
+  opacity: 0.5;
+  cursor: pointer;
+  list-style: none;
+}
+
+.more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.more > summary::before {
+  content: '+ ';
+}
+
+.more[open] > summary::before {
+  content: '− ';
+}
+
+.more > summary:hover {
+  opacity: 0.85;
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(255, 0, 80, 0.6) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 0, 80, 0.6) 1px, transparent 1px);
+}
+
+.spacer {
+  height: 10px;
+}
+
+.presets {
+  margin-bottom: 20px;
+}
+
+.palette {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 7px;
+}
+
+.palette .row:last-child {
+  margin-bottom: 0;
+}
+
+.palette-pickers {
+  flex: 1 1 auto;
+}
+
+.btn--mini {
+  flex: 0 0 auto;
+  padding: 3px 4px;
+  line-height: 0;
+}
+
+.palette .row {
+  grid-template-columns: 44px 1fr;
+}
+
+.btn.is-active {
+  background: #fff;
+  color: #000;
+}
+
+.btn.is-modified {
+  border-style: dashed;
+  border-color: #fff;
+}

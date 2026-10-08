@@ -8,5 +8,11 @@ export default defineConfig({
   build: {
     // keep `build/` so the existing gh-pages deploy script works
     outDir: 'build',
+    rollupOptions: {
+      input: {
+        main: 'index.html',
+        water: 'water/index.html',
+      },
+    },
   },
 })

@@ -9,6 +9,9 @@
 # production
 /build
 
+# scratch / design references
+/temp
+
 # misc
 .DS_Store
 .env
