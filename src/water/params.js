@@ -34,12 +34,13 @@ export const PARAM_META = {
   grain: { label: 'grain', min: 0, max: 1, step: 0.01, group: 'noise' },
   speckle: { label: 'speckle', min: 0, max: 1, step: 0.01, group: 'noise' },
 
-  // motion
-  speed: { label: 'speed', min: 0, max: 6, step: 0.05, group: 'motion' },
-  driftX: { label: 'drift x', min: -8, max: 8, step: 0.05, group: 'motion' },
-  driftY: { label: 'drift y', min: -8, max: 8, step: 0.05, group: 'motion' },
+  // time — speed is the master clock; everything the water does runs on it
+  speed: { label: 'speed', min: 0, max: 6, step: 0.05, group: 'time' },
+  driftX: { label: 'drift x', min: -8, max: 8, step: 0.05, group: 'time' },
+  driftY: { label: 'drift y', min: -8, max: 8, step: 0.05, group: 'time' },
 
   // output
+  inkOpacity: { label: 'ink opacity', min: 0, max: 1, step: 0.01, group: 'output' },
   pixelSize: {
     label: 'pixel size',
     min: 1,
@@ -52,10 +53,9 @@ export const PARAM_META = {
     modulatable: false,
   },
   dither: { label: 'dither', min: 0, max: 1, step: 0.02, group: 'output' },
-  inkOpacity: { label: 'ink opacity', min: 0, max: 1, step: 0.01, group: 'output' },
 }
 
-export const GROUPS = ['field', 'line', 'waves', 'flow', 'noise', 'motion', 'output']
+export const GROUPS = ['field', 'line', 'waves', 'flow', 'noise', 'time', 'output']
 
 export const groupedParams = (group) =>
   Object.entries(PARAM_META)

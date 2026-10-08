@@ -6,6 +6,12 @@
   font-display: block;
 }
 
+/* The lab is its own page (/water), so it brings its own reset. */
+body {
+  margin: 0;
+  background: #000;
+}
+
 .lab {
   position: fixed;
   inset: 0;
@@ -95,7 +101,7 @@
 }
 
 .lab__row input[type='color'] {
-  width: 44px;
+  width: 100%;
   height: 22px;
   padding: 0;
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -190,12 +196,12 @@
   top: 12px;
   right: 12px;
   z-index: 10;
-  padding: 6px 10px;
+  padding: 2px 6px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   background: rgba(0, 0, 0, 0.7);
   color: #fff;
   font-family: 'Departure Mono', ui-monospace, monospace;
-  font-size: 12px;
+  font-size: 10px;
   cursor: pointer;
 }
 
@@ -239,4 +245,65 @@
 
 .lab__more > summary:hover {
   opacity: 0.85;
+}
+
+/* Tile boundaries: a 1px line along the top and left edge of every tile.
+   Faint, so it's enough to check a seam without being mistaken for texture. */
+.lab__grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, rgba(255, 0, 80, 0.6) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 0, 80, 0.6) 1px, transparent 1px);
+}
+
+.lab__spacer {
+  height: 10px;
+}
+
+/* Breathing room between the preset buttons and the first control group. */
+.lab__presets {
+  margin-bottom: 20px;
+}
+
+.lab__palette {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 7px;
+}
+
+/* The rows' bottom margin would otherwise count toward the pickers' height and
+   push the icon below the midpoint between them. */
+.lab__palette .lab__row:last-child {
+  margin-bottom: 0;
+}
+
+.lab__palette-pickers {
+  flex: 1 1 auto;
+}
+
+/* Icon button beside the pickers: just the icon in a snug bordered box. */
+.lab__btn--mini {
+  flex: 0 0 auto;
+  padding: 3px 4px;
+  line-height: 0;
+}
+
+/* Label in a fixed column, picker stretched across the rest. */
+.lab__palette .lab__row {
+  grid-template-columns: 44px 1fr;
+}
+
+/* The preset you're on: filled while the settings still match it, a dashed
+   outline once you've tweaked away from it. */
+.lab__btn.is-active {
+  background: #fff;
+  color: #000;
+}
+
+.lab__btn.is-modified {
+  border-style: dashed;
+  border-color: #fff;
 }

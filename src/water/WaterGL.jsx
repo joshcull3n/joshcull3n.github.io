@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { VERT, FRAG } from './shaders.js'
-import { DEFAULTS, hexToRgb, inkRgb } from './engine.js'
+import { DEFAULTS, hexToRgb, inkRgb } from './defaults.js'
 import { applyModulation } from './modulation.js'
-import WaterCanvas from './WaterCanvas.jsx'
 
 const UNIFORMS = [
   'uResolution', 'uTime', 'uInk', 'uPaper', 'uScale', 'uBands', 'uLineWidth',
-  'uAmplitude', 'uFrequency', 'uVolatility', 'uSpeed', 'uDrift', 'uDither',
+  'uAmplitude', 'uFrequency', 'uVolatility', 'uWaterTime', 'uDrift', 'uDither',
   'uSeed', 'uOctaves', 'uWaves', 'uLineVary', 'uBreakup', 'uFacing', 'uLightAngle',
-  'uFlow', 'uBend', 'uSwirl', 'uSpin', 'uGrain', 'uSpeckle',
+  'uFlow', 'uBend', 'uSwirl', 'uSpin', 'uGrain', 'uSpeckle', 'uTile',
 ]
 
 function compile(gl, type, source) {
@@ -41,6 +40,31 @@ function buildProgram(gl) {
 }
 
 const rgb01 = (hex) => hexToRgb(hex).map((c) => c / 255)
+// ?nogl in the URL behaves as if WebGL2 were missing — for checking the
+// notice without hunting down a browser that lacks it.
+const forceFallback = () => new URLSearchParams(window.location.search).has('nogl')
+
+// What browsers without WebGL2 get. There's no point faking the water without
+// it, so just say why there's nothing here.
+const NoWebGL = ({ className, style }) => (
+  <div
+    className={className}
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '100%',
+      height: '100%',
+      background: '#000',
+      color: 'rgba(255, 255, 255, 0.7)',
+      fontFamily: "'Departure Mono', ui-monospace, monospace",
+      fontSize: '13px',
+      ...style,
+    }}
+  >
+    your browser doesn&rsquo;t support webgl2
+  </div>
+)
 
 /**
  * WebGL2 renderer for the 1-bit water.
@@ -49,7 +73,7 @@ const rgb01 = (hex) => hexToRgb(hex).map((c) => c / 255)
  * image-rendering: pixelated — the GPU makes the pixel count cheap, but the
  * chunky grid is the whole look, so it stays.
  *
- * Falls back to the CPU canvas renderer if WebGL2 is unavailable.
+ * Shows a notice instead (NoWebGL) if WebGL2 is unavailable.
  */
 const WaterGL = ({ params, lfos, paused = false, onFallback, className, style }) => {
   const canvasRef = useRef(null)
@@ -66,7 +90,7 @@ const WaterGL = ({ params, lfos, paused = false, onFallback, className, style })
     const canvas = canvasRef.current
     if (!canvas) return
 
-    const gl = canvas.getContext('webgl2', { antialias: false, alpha: false })
+    const gl = forceFallback() ? null : canvas.getContext('webgl2', { antialias: false, alpha: false })
     if (!gl) {
       setFailed(true)
       onFallback?.('WebGL2 unavailable')
@@ -92,14 +116,17 @@ const WaterGL = ({ params, lfos, paused = false, onFallback, className, style })
 
     let frameId = null
     let elapsed = 0
+    let waterTime = 0 // real time integrated against speed — see the shader
     let lastStamp = null
 
     const loop = (stamp) => {
       if (lastStamp === null) lastStamp = stamp
-      if (!pausedRef.current) elapsed += (stamp - lastStamp) / 1000
+      const dt = pausedRef.current ? 0 : (stamp - lastStamp) / 1000
       lastStamp = stamp
+      elapsed += dt
 
       const p = applyModulation({ ...DEFAULTS, ...paramsRef.current }, lfosRef.current, elapsed)
+      waterTime += dt * p.speed
       const pixelSize = Math.max(1, p.pixelSize || 1)
       const rect = canvas.getBoundingClientRect()
       const w = Math.max(1, Math.ceil(rect.width / pixelSize))
@@ -121,7 +148,7 @@ const WaterGL = ({ params, lfos, paused = false, onFallback, className, style })
       gl.uniform1f(loc.uAmplitude, p.amplitude)
       gl.uniform1f(loc.uFrequency, p.frequency)
       gl.uniform1f(loc.uVolatility, p.volatility)
-      gl.uniform1f(loc.uSpeed, p.speed)
+      gl.uniform1f(loc.uWaterTime, waterTime)
       gl.uniform2f(loc.uDrift, p.driftX, p.driftY)
       gl.uniform1f(loc.uDither, p.dither)
       gl.uniform1f(loc.uSeed, p.seed)
@@ -137,6 +164,7 @@ const WaterGL = ({ params, lfos, paused = false, onFallback, className, style })
       gl.uniform1f(loc.uSpin, p.spin)
       gl.uniform1f(loc.uGrain, p.grain)
       gl.uniform1f(loc.uSpeckle, p.speckle)
+      gl.uniform1f(loc.uTile, p.tile || 0)
 
       gl.drawArrays(gl.TRIANGLES, 0, 3)
       frameId = requestAnimationFrame(loop)
@@ -151,17 +179,7 @@ const WaterGL = ({ params, lfos, paused = false, onFallback, className, style })
     }
   }, [onFallback])
 
-  if (failed) {
-    return (
-      <WaterCanvas
-        params={params}
-        lfos={lfos}
-        paused={paused}
-        className={className}
-        style={style}
-      />
-    )
-  }
+  if (failed) return <NoWebGL className={className} style={style} />
 
   return (
     <canvas

@@ -9,7 +9,7 @@ import { PARAM_META } from './params.js'
 
 export const SHAPES = ['sine', 'triangle', 'saw', 'square', 'random', 'steps']
 
-// Deterministic hash for sample-and-hold, so a given step index is stable.
+// Deterministic hash for the random shapes, so a given step index is stable.
 // The additive constant matters: without it n=0 hashes to exactly 0, which
 // pins the first cycle of every random LFO to its target's minimum.
 function hash1(n) {

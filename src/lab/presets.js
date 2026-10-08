@@ -1,28 +1,63 @@
 // Presets are complete characters, not nudges off the defaults — each one sets
-// nearly every parameter that shapes the look. Anything left out falls back to
-// DEFAULTS, so `default` always tracks whatever the defaults are tuned to.
-// Every preset is white ink on black paper unless it says otherwise. Pixel
-// size and seed belong to the viewer and are never touched.
+// nearly every parameter that shapes the look, and BASE (below) fills in the
+// rest. Every preset is white ink on black paper unless it says otherwise. Pixel
+// size and tile size belong to the viewer and are never touched; so does the
+// seed, unless a preset sets one (rolled looks depend on theirs).
 //
 // `lfos` is optional: [target, overrides] pairs handed to createLFO. Some looks
 // are about how the water changes, not how it sits, and a static preset can't
 // express that.
+//
+// BASE fills in anything a preset leaves out. It's a frozen copy of the lab's
+// original look (now the "drift" preset) rather than a reference to DEFAULTS,
+// so retuning the defaults can never quietly change a preset.
+const BASE = {
+  scale: 100, bands: 3, octaves: 4,
+  lineWidth: 2.5, lineVary: 0, breakup: 0.4, facing: 0.85, lightAngle: 135,
+  waves: 4, amplitude: 10, frequency: 0.1, volatility: 1.6,
+  flow: 2.5, bend: 0.6, swirl: 0.5, spin: 1,
+  grain: 0, speckle: 0,
+  speed: 0.5, driftX: 1, driftY: 0.4,
+  dither: 0.2, inkOpacity: 1,
+}
 
-import { DEFAULTS } from '../water/engine.js'
-
-const { ink, paper, pixelSize, seed, ...CHARACTER } = DEFAULTS
-
-const preset = (overrides) => ({ ...CHARACTER, ink: '#ffffff', paper: '#000000', ...overrides })
+const preset = (overrides) => ({ ...BASE, ink: '#ffffff', paper: '#000000', ...overrides })
 
 export const PRESETS = {
-  default: preset({}),
+  // The lab's default look. Busy and cellular, like something growing. The LFO
+  // on amplitude makes the whole surface slowly tighten and relax.
+  organic: preset({
+    scale: 30, bands: 4, octaves: 5,
+    lineWidth: 3.5, lineVary: 1, breakup: 0.5, facing: 0.6, lightAngle: 135,
+    waves: 8, amplitude: 8.6, frequency: 0.01, volatility: 1.95,
+    flow: 1.5, bend: 0.5, swirl: 0.8, spin: 0.8,
+    grain: 0, speckle: 0,
+    speed: 1, driftX: 0.5, driftY: 0.2,
+    dither: 0, inkOpacity: 1, ink: '#ffccd4',
+    lfos: [['amplitude', { shape: 'sine', rate: 0.12, depth: 0.37, phase: 0 }]],
+  }),
 
-  // Rotation. Everything curls, and the light circles around it.
+  // The lab's original look: broad, slow shapes in heavy white strokes.
+  drift: preset({}),
+
+  // White on blue. Started life as a copy of static.
+  ocean: preset({
+    scale: 30, bands: 4, octaves: 5, lineWidth: 3.5, lineVary: 1, breakup: 0.5, facing: 0.6,
+    waves: 4, amplitude: 6, frequency: 0.12, volatility: 1, flow: 1.5, bend: 0.5, swirl: 0.8, spin: 0.8,
+    speed: 1, driftX: 0.5, driftY: 0.2, dither: 0.4, paper: '#009eff',
+  }),
+
+  // Big shapes in fine, broken lines, with the curl turning backwards and the
+  // bands slowly breathing. Rolled by random with seed 37640.
   eddy: preset({
-    scale: 90, bands: 5, lineWidth: 1.6, lineVary: 0.7, breakup: 0.25, facing: 1.2,
-    waves: 3, amplitude: 12, frequency: 0.07, volatility: 1.4, flow: 2.2, bend: 2, swirl: 1.5, spin: 2.6,
-    speed: 1.2, driftX: 0, driftY: 0, dither: 0.1,
-    lfos: [['lightAngle', { shape: 'saw', rate: 0.04, depth: 1 }]],
+    scale: 121, bands: 3.9, octaves: 5,
+    lineWidth: 0.844, lineVary: 0.24, breakup: 0.693, facing: 1.169, lightAngle: 257,
+    waves: 2, amplitude: 32.364, frequency: 0.148, volatility: 0.652,
+    flow: 2.449, bend: 2.418, swirl: 0.127, spin: -1.821,
+    grain: 0.47, speckle: 0,
+    speed: 1.782, driftX: 0.653, driftY: 0.669,
+    dither: 0.135, inkOpacity: 1,
+    lfos: [['bands', { shape: 'triangle', rate: 0.064, depth: 0.314, phase: 0.187 }]],
   }),
 
   // A river: everything pulled one way, lit from upstream.
@@ -33,32 +68,29 @@ export const PRESETS = {
   }),
 
   // Chaos, but still water.
-  squall: preset({
+  paramour: preset({
     scale: 60, bands: 6, octaves: 3, lineWidth: 1.8, lineVary: 1, breakup: 0.3, facing: 1,
-    waves: 5, amplitude: 6, frequency: 0.07, volatility: 2.2, flow: 3, bend: 1, swirl: 1.5, spin: 1.5,
-    speed: 2.5, driftX: -2, driftY: 1.5, dither: 0.1, ink: '#ff5ccb',
+    waves: 5, amplitude: 6, frequency: 0.07, volatility: 2.2, flow: 3, bend: 1, swirl: 1.5, spin: 0.6,
+    speed: 2.5, driftX: -0.8, driftY: 0.6, dither: 0.1, ink: '#ff5ccb',
     lfos: [['volatility', { shape: 'random', rate: 0.25, depth: 0.15 }]],
   }),
 
   // Grain. Heavy dither and every octave, so strokes dissolve into static.
   static: preset({
-    scale: 30, bands: 4, octaves: 5, lineWidth: 3.5, lineVary: 1, breakup: 0.5, facing: 0.6,
-    waves: 4, amplitude: 6, frequency: 0.12, volatility: 1, flow: 1.5, bend: 0.5, swirl: 0.8, spin: 0.8,
-    speed: 1, dither: 1, speckle: 0.2,
-  }),
-
-  // static, white on blue.
-  ocean: preset({
-    scale: 30, bands: 4, octaves: 5, lineWidth: 3.5, lineVary: 1, breakup: 0.5, facing: 0.6,
-    waves: 4, amplitude: 6, frequency: 0.12, volatility: 1, flow: 1.5, bend: 0.5, swirl: 0.8, spin: 0.8,
-    speed: 1, dither: 0.4, paper: '#009eff',
+    scale: 30, bands: 2.4, octaves: 5,
+    lineWidth: 3.5, lineVary: 1, breakup: 0.5, facing: 0.6, lightAngle: 135,
+    waves: 4, amplitude: 6, frequency: 0.12, volatility: 1,
+    flow: 1.5, bend: 0.5, swirl: 0.8, spin: 0.8,
+    grain: 0.3, speckle: 0.2,
+    speed: 1, driftX: 0.5, driftY: 0.2,
+    dither: 1, inkOpacity: 1,
   }),
 
   // Near-black. Lines only occasionally make it to the surface.
   abyss: preset({
     scale: 120, bands: 2, lineWidth: 1.5, lineVary: 0.9, breakup: 0.75, facing: 1.3,
     lightAngle: 270, waves: 2, amplitude: 6, frequency: 0.06, volatility: 1, flow: 2, bend: 0.6,
-    swirl: 0.4, spin: 0.4, speed: 0.6, driftX: 0.2, driftY: 0.6, dither: 0,
+    swirl: 0.4, spin: 0.667, speed: 0.6, driftX: 0.333, driftY: 1, dither: 0,
     lfos: [['breakup', { rate: 0.03, depth: 0.3 }]],
   }),
 
@@ -72,19 +104,6 @@ export const PRESETS = {
     grain: 0, speckle: 0,
     speed: 0.5, driftX: 0, driftY: 0,
     dither: 1, inkOpacity: 1,
-  }),
-
-  // Busy and cellular, like something growing. The LFO on amplitude
-  // makes the whole surface slowly tighten and relax.
-  organic: preset({
-    scale: 30, bands: 4, octaves: 5,
-    lineWidth: 3.5, lineVary: 1, breakup: 0.5, facing: 0.6, lightAngle: 135,
-    waves: 8, amplitude: 8.6, frequency: 0.01, volatility: 1.95,
-    flow: 1.5, bend: 0.5, swirl: 0.8, spin: 0.8,
-    grain: 0, speckle: 0,
-    speed: 1, driftX: 0.5, driftY: 0.2,
-    dither: 0, inkOpacity: 1, ink: '#ffccd4',
-    lfos: [['amplitude', { shape: 'sine', rate: 0.12, depth: 0.37, phase: 0 }]],
   }),
 
   // Every water-ish term off — the plain topographic map, kept as an A/B.
