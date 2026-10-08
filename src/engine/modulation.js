@@ -1,17 +1,11 @@
-// LFO modulation. Each LFO has a shape, a rate, a depth and a target
-// parameter; depth is a fraction of the target's full range, so 0.5 always
-// means "swing across half this parameter's span" no matter what it controls.
-//
-// Modulation is applied inside the render loop rather than in React state —
-// at 60fps, setState would be the single most expensive thing on the page.
+// LFO modulation
+// each LFO has a shape, a rate, a depth and a target parameter
+// - modulation is applied inside the render loop rather than in React state
 
 import { PARAM_META } from './params.js'
 
 export const SHAPES = ['sine', 'triangle', 'saw', 'square', 'random', 'steps']
 
-// Deterministic hash for the random shapes, so a given step index is stable.
-// The additive constant matters: without it n=0 hashes to exactly 0, which
-// pins the first cycle of every random LFO to its target's minimum.
 function hash1(n) {
   let h = Math.imul((n | 0) + 0x9e3779b9, 374761393)
   h = Math.imul(h ^ (h >>> 13), 1274126177)
@@ -28,11 +22,7 @@ function shapeValue(shape, phase) {
     case 'square':
       return phase - Math.floor(phase) < 0.5 ? 1 : -1
     case 'random': {
-      // A new random target every cycle, glided through on a Catmull-Rom
-      // curve. Plain sample-and-hold snaps the target param, which lurches the
-      // whole picture; even a smoothstep blend stalls at every sample point,
-      // so the motion pulses once per cycle. Catmull-Rom keeps the velocity
-      // continuous. It can overshoot slightly, hence the clamp.
+      // transitions using catmull-rom curve
       const i = Math.floor(phase)
       const t = phase - i
       const p0 = hash1(i - 1) * 2 - 1
@@ -48,7 +38,6 @@ function shapeValue(shape, phase) {
       return v < -1 ? -1 : v > 1 ? 1 : v
     }
     case 'steps':
-      // Hard sample & hold: one new random value per cycle, no glide.
       return hash1(Math.floor(phase)) * 2 - 1
     case 'sine':
     default:
@@ -60,18 +49,13 @@ export const createLFO = (target, overrides = {}) => ({
   id: `${target}-${Math.floor(Math.random() * 1e9).toString(36)}`,
   target,
   shape: 'sine',
-  rate: 0.15, // Hz — slow by default; this is a background, not a strobe
+  rate: 0.15, // Hz
   depth: 0.3, // fraction of the target param's range
-  phase: 0, // 0..1 offset, for running several LFOs out of step
+  phase: 0, // only useful with multiple LFOs
   enabled: true,
   ...overrides,
 })
 
-/**
- * Returns a new params object with every enabled LFO applied.
- * Base values are untouched, so turning an LFO off restores exactly what the
- * slider says.
- */
 export function applyModulation(params, lfos, time) {
   if (!lfos || lfos.length === 0) return params
 
@@ -90,7 +74,6 @@ export function applyModulation(params, lfos, time) {
 
     let value = (out[lfo.target] ?? params[lfo.target]) + signal * lfo.depth * span * 0.5
 
-    // Clamp into the param's legal range, then quantize integers.
     if (value < meta.min) value = meta.min
     else if (value > meta.max) value = meta.max
     if (meta.int) value = Math.round(value)

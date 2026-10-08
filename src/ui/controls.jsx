@@ -1,15 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react'
-import WaterGL from '../water/WaterGL.jsx'
-import { DEFAULTS } from '../water/defaults.js'
-import { GROUPS, groupedParams, MODULATABLE, PARAM_META } from '../water/params.js'
-import { createLFO, SHAPES } from '../water/modulation.js'
+import WaterGL from '../engine/WaterGL.jsx'
+import { DEFAULTS } from '../engine/defaults.js'
+import { GROUPS, groupedParams, MODULATABLE, PARAM_META } from '../engine/params.js'
+import { createLFO, SHAPES } from '../engine/modulation.js'
 import { PRESETS, randomLook } from './presets.js'
-import './lab.css'
+import './styles.css'
 
-// The config as copied to the clipboard: params plus LFOs, with LFOs in the
-// same [target, { ... }] shape presets.js uses, so a copied config can be
-// pasted straight in as a preset. Numbers are rounded because randomize()
-// produces long floats nobody wants to read.
 const round = (v) => (typeof v === 'number' ? Math.round(v * 1000) / 1000 : v)
 
 function exportConfig(params, lfos) {
@@ -21,22 +17,15 @@ function exportConfig(params, lfos) {
       rate: round(rate),
       depth: round(depth),
       phase: round(phase),
-      // Only worth recording when it's off; on is the default.
       ...(enabled ? {} : { enabled: false }),
     },
   ])
   return out
 }
 
-// Multiples of 4, so the 4x4 Bayer dither repeats cleanly with the tile.
 const TILE_SIZES = [64, 128, 256, 512, 1024, 2048]
 const DEFAULT_TILE = 512
 
-// Swap ink and paper: a squared-off bracket arrow, out to the right and back,
-// with an open chevron head at each end pointing at the two pickers. Pixel art
-// on a 10x26 grid at 1 screen px per cell, so strokes are 1px — the same
-// weight as the pixel font. crispEdges keeps it unsmoothed. Each `M..z` is one
-// horizontal run of filled cells.
 const SWAP_ICON_PATH =
   'M4 0h1v1h-1zM3 1h1v1h-1zM2 2h1v1h-1zM1 3h1v1h-1zM0 4h10v1h-10zM1 5h1v1h-1zM9 5h1v1h-1zM2 6h1v1h-1zM9 6h1v1h-1zM3 7h1v1h-1zM9 7h1v1h-1zM4 8h1v1h-1zM9 8h1v1h-1zM9 9h1v1h-1zM9 10h1v1h-1zM9 11h1v1h-1zM9 12h1v1h-1zM9 13h1v1h-1zM9 14h1v1h-1zM9 15h1v1h-1zM9 16h1v1h-1zM4 17h1v1h-1zM9 17h1v1h-1zM3 18h1v1h-1zM9 18h1v1h-1zM2 19h1v1h-1zM9 19h1v1h-1zM1 20h1v1h-1zM9 20h1v1h-1zM0 21h10v1h-10zM1 22h1v1h-1zM2 23h1v1h-1zM3 24h1v1h-1zM4 25h1v1h-1z'
 
@@ -53,15 +42,9 @@ const SwapIcon = () => (
   </svg>
 )
 
-// The defaults are the organic preset, and its amplitude LFO is part of that
-// look — so the lab starts with it running, and reset brings it back.
 const defaultLfos = () =>
   (PRESETS.organic.lfos ?? []).map(([target, overrides]) => createLFO(target, overrides))
 
-// Whether the current settings still are a preset: every value it sets, and
-// the same LFOs. Anything a preset doesn't set (pixel size, tile, and usually
-// the seed) doesn't count. Floats get a little slack — a slider dragged away and back can
-// land a rounding error off the original.
 const near = (a, b) => (typeof a === 'number' ? Math.abs(a - b) < 1e-6 : a === b)
 
 function presetMatches(preset, params, lfos) {
@@ -76,29 +59,21 @@ function presetMatches(preset, params, lfos) {
   })
 }
 
-const StyleLab = () => {
+const Controls = () => {
   const [params, setParams] = useState({ ...DEFAULTS })
   const [showPanel, setShowPanel] = useState(true)
   const [paused, setPaused] = useState(false)
   const [fps, setFps] = useState(0)
   const [glError, setGlError] = useState(null)
   const [showGrid, setShowGrid] = useState(true)
-  // The size the toggle switches back on to — 512 at first, then whatever was
-  // last picked, so toggling off and on doesn't lose your choice.
   const [lastTile, setLastTile] = useState(DEFAULT_TILE)
   const [lfos, setLfos] = useState(defaultLfos)
-  // The last preset applied — the lab starts as organic. Whether the current
-  // settings still match it is worked out on render (see presetMatches).
   const [activePreset, setActivePreset] = useState('organic')
 
-  // WaterGL swaps itself for a notice if WebGL2 fails (or with ?nogl); glError
-  // is set when that happens, and the lab drops its controls (see below).
   const tiling = params.tile > 0
-
   const set = (key, value) => setParams((prev) => ({ ...prev, [key]: value }))
 
-  // A preset replaces the look (palette included) and the LFOs, but keeps the
-  // viewer's pixel size, tile size and — unless the preset sets one — seed.
+  // presets dont replace pixel and tile size
   const applyPreset = (name) => {
     const { lfos: presetLfos = [], ...look } = PRESETS[name]
     setParams((prev) => ({
@@ -106,15 +81,12 @@ const StyleLab = () => {
       ...look,
       pixelSize: prev.pixelSize,
       tile: prev.tile,
-      // Most presets work with any seed; ones rolled by random carry their own.
       seed: look.seed ?? prev.seed,
     }))
     setLfos(presetLfos.map(([target, overrides]) => createLFO(target, overrides)))
     setActivePreset(name)
   }
 
-  // Rolls a whole new look, LFOs included. Keeps the palette, ink opacity and
-  // pixel size; the seed is part of the roll.
   const randomize = () => {
     const { lfos: rolledLfos, ...look } = randomLook()
     setParams((prev) => ({ ...prev, ...look }))
@@ -125,7 +97,6 @@ const StyleLab = () => {
   const addLFO = () =>
     setLfos((prev) => [
       ...prev,
-      // Stagger phases so a second LFO doesn't move in lockstep with the first.
       createLFO('volatility', { phase: (prev.length * 0.25) % 1 }),
     ])
 
@@ -134,17 +105,15 @@ const StyleLab = () => {
 
   const removeLFO = (id) => setLfos((prev) => prev.filter((l) => l.id !== id))
 
-  // Params currently driven by an LFO — their sliders set the centre point
-  // rather than the live value, so the UI marks them.
   const modulated = new Set(lfos.filter((l) => l.enabled && l.depth > 0).map((l) => l.target))
 
   const renderSlider = ({ key, label, min, max, step }) => (
-    <div className="lab__row" key={key}>
+    <div className="row" key={key}>
       <label htmlFor={key}>
-        {modulated.has(key) ? <span className="lab__mod-dot">~</span> : null}
+        {modulated.has(key) ? <span className="mod-dot">~</span> : null}
         {label}
       </label>
-      <span className="lab__value">{Number(params[key]).toFixed(step < 1 ? 2 : 0)}</span>
+      <span className="value">{Number(params[key]).toFixed(step < 1 ? 2 : 0)}</span>
       <input
         id={key}
         type="range"
@@ -157,8 +126,6 @@ const StyleLab = () => {
     </div>
   )
 
-  // Sampled frame rate — the headline number for whether this is viable as an
-  // always-on background rather than a demo.
   const frames = useRef(0)
   useEffect(() => {
     let raf
@@ -177,45 +144,41 @@ const StyleLab = () => {
   }, [])
 
   const water = (
-    <div className="lab__water">
+    <div className="water">
       <WaterGL params={params} lfos={lfos} paused={paused} onFallback={setGlError} />
     </div>
   )
 
-  // Without WebGL2 there's no water to tune, so drop the controls and leave
-  // just WaterGL's notice. Same position in the tree, so it stays mounted.
-  if (glError) return <div className="lab">{water}</div>
+  if (glError) return <div className="page">{water}</div>
 
   return (
-    <div className="lab">
+    <div className="page">
       {water}
 
-      {/* Tile boundaries, drawn in CSS so they never touch the 1-bit output. */}
       {tiling && showGrid ? (
         <div
-          className="lab__grid"
+          className="grid"
           style={{ backgroundSize: `${params.tile * params.pixelSize}px ${params.tile * params.pixelSize}px` }}
         />
       ) : null}
 
-      <div className="lab__fps">
+      <div className="fps">
         {fps} fps
       </div>
 
-      <button className="lab__toggle" onClick={() => setShowPanel((v) => !v)}>
+      <button className="toggle" onClick={() => setShowPanel((v) => !v)}>
         {showPanel ? 'hide' : 'controls'}
       </button>
 
-      <div className={`lab__panel${showPanel ? '' : ' is-hidden'}`}>
-        <h1 className="lab__title">water lab</h1>
-        <p className="lab__hint">push the sliders past comfortable. find the edges.</p>
+      <div className={`panel${showPanel ? '' : ' is-hidden'}`}>
+        <h3>texture generator</h3>
 
-        <div className="lab__presets">
-          <div className="lab__buttons">
+        <div className="presets">
+          <div className="buttons">
             {Object.keys(PRESETS).map((name) => (
               <button
                 key={name}
-                className={`lab__btn${
+                className={`btn${
                   name === activePreset
                     ? presetMatches(PRESETS[name], params, lfos)
                       ? ' is-active'
@@ -229,33 +192,28 @@ const StyleLab = () => {
             ))}
           </div>
 
-          <div className="lab__buttons">
-            <button className="lab__btn" onClick={randomize}>
+          <div className="buttons">
+            <button className="btn" onClick={randomize}>
               random
             </button>
           </div>
         </div>
 
-        {/* Output first: how the water is drawn — colours, resolution, tiling —
-            as opposed to what the water does, which is everything below. */}
-        <fieldset className="lab__group">
-          <legend className="lab__legend">output</legend>
-          {/* Colour pickers on the left, invert beside them — it acts on both. */}
-          <div className="lab__palette">
-            <div className="lab__palette-pickers">
-              <div className="lab__row">
+        <fieldset className="group">
+          <legend className="legend">output</legend>
+          <div className="palette">
+            <div className="palette-pickers">
+              <div className="row">
                 <label htmlFor="ink">ink</label>
-                <input
-                  id="ink"
+                <input id="ink"
                   type="color"
                   value={params.ink}
                   onChange={(e) => set('ink', e.target.value)}
                 />
               </div>
-              <div className="lab__row">
+              <div className="row">
                 <label htmlFor="paper">paper</label>
-                <input
-                  id="paper"
+                <input id="paper"
                   type="color"
                   value={params.paper}
                   onChange={(e) => set('paper', e.target.value)}
@@ -263,16 +221,16 @@ const StyleLab = () => {
               </div>
             </div>
             <button
-              className="lab__btn lab__btn--mini"
+              className="btn btn--mini"
               onClick={() => setParams((p) => ({ ...p, ink: p.paper, paper: p.ink }))}
               aria-label="swap ink and paper"
             >
               <SwapIcon />
             </button>
           </div>
-          <div className="lab__spacer" />
+          <div className="spacer" />
           {groupedParams('output').map(renderSlider)}
-          <div className="lab__row">
+          <div className="row">
             <label htmlFor="tile">tile</label>
             <input
               id="tile"
@@ -283,11 +241,11 @@ const StyleLab = () => {
           </div>
           {params.tile > 0 ? (
             <>
-              <div className="lab__row">
+              <div className="row">
                 <label htmlFor="tileSize">size (px)</label>
                 <select
                   id="tileSize"
-                  className="lab__select"
+                  className="select"
                   value={params.tile}
                   onChange={(e) => {
                     const size = Number(e.target.value)
@@ -302,7 +260,7 @@ const StyleLab = () => {
                   ))}
                 </select>
               </div>
-              <div className="lab__row">
+              <div className="row">
                 <label htmlFor="grid">show grid</label>
                 <input
                   id="grid"
@@ -320,11 +278,11 @@ const StyleLab = () => {
           const basic = all.filter((p) => !p.advanced)
           const advanced = all.filter((p) => p.advanced)
           return (
-            <fieldset className="lab__group" key={group}>
-              <legend className="lab__legend">{group}</legend>
+            <fieldset className="group" key={group}>
+              <legend className="legend">{group}</legend>
               {basic.map(renderSlider)}
               {advanced.length > 0 ? (
-                <details className="lab__more">
+                <details className="more">
                   <summary>more</summary>
                   {advanced.map(renderSlider)}
                 </details>
@@ -333,20 +291,20 @@ const StyleLab = () => {
           )
         })}
 
-        <fieldset className="lab__group">
-          <legend className="lab__legend">modulation</legend>
+        <fieldset className="group">
+          <legend className="legend">modulation</legend>
 
           {lfos.length === 0 ? (
-            <p className="lab__hint" style={{ margin: '6px 0' }}>
+            <p className="hint" style={{ margin: '6px 0' }}>
               no lfos. add one and point it at any parameter.
             </p>
           ) : null}
 
           {lfos.map((lfo, i) => (
-            <div className="lab__lfo" key={lfo.id}>
-              <div className="lab__lfo-head">
-                <span className="lab__lfo-name">lfo {i + 1}</span>
-                <label className="lab__lfo-enable">
+            <div className="lfo" key={lfo.id}>
+              <div className="lfo-head">
+                <span className="lfo-name">lfo {i + 1}</span>
+                <label className="lfo-enable">
                   <input
                     type="checkbox"
                     checked={lfo.enabled}
@@ -355,7 +313,7 @@ const StyleLab = () => {
                   on
                 </label>
                 <button
-                  className="lab__btn lab__btn--tiny"
+                  className="btn btn--tiny"
                   onClick={() => removeLFO(lfo.id)}
                   aria-label={`remove lfo ${i + 1}`}
                 >
@@ -363,10 +321,10 @@ const StyleLab = () => {
                 </button>
               </div>
 
-              <div className="lab__row">
+              <div className="row">
                 <label>target</label>
                 <select
-                  className="lab__select"
+                  className="select"
                   value={lfo.target}
                   onChange={(e) => updateLFO(lfo.id, { target: e.target.value })}
                 >
@@ -378,10 +336,10 @@ const StyleLab = () => {
                 </select>
               </div>
 
-              <div className="lab__row">
+              <div className="row">
                 <label>shape</label>
                 <select
-                  className="lab__select"
+                  className="select"
                   value={lfo.shape}
                   onChange={(e) => updateLFO(lfo.id, { shape: e.target.value })}
                 >
@@ -393,9 +351,9 @@ const StyleLab = () => {
                 </select>
               </div>
 
-              <div className="lab__row">
+              <div className="row">
                 <label>rate</label>
-                <span className="lab__value">{lfo.rate.toFixed(2)} hz</span>
+                <span className="value">{lfo.rate.toFixed(2)} hz</span>
                 <input
                   type="range"
                   min={0.01}
@@ -406,9 +364,9 @@ const StyleLab = () => {
                 />
               </div>
 
-              <div className="lab__row">
+              <div className="row">
                 <label>depth</label>
-                <span className="lab__value">{Math.round(lfo.depth * 100)}%</span>
+                <span className="value">{Math.round(lfo.depth * 100)}%</span>
                 <input
                   type="range"
                   min={0}
@@ -419,9 +377,9 @@ const StyleLab = () => {
                 />
               </div>
 
-              <div className="lab__row">
+              <div className="row">
                 <label>phase</label>
-                <span className="lab__value">{Math.round(lfo.phase * 360)}°</span>
+                <span className="value">{Math.round(lfo.phase * 360)}°</span>
                 <input
                   type="range"
                   min={0}
@@ -434,27 +392,27 @@ const StyleLab = () => {
             </div>
           ))}
 
-          <div className="lab__buttons">
-            <button className="lab__btn" onClick={addLFO}>
+          <div className="buttons">
+            <button className="btn" onClick={addLFO}>
               + add lfo
             </button>
           </div>
         </fieldset>
 
-        <fieldset className="lab__group">
-          <legend className="lab__legend">actions</legend>
-          <div className="lab__buttons">
-            <button className="lab__btn" onClick={() => setPaused((v) => !v)}>
+        <fieldset className="group">
+          <legend className="legend">actions</legend>
+          <div className="buttons">
+            <button className="btn" onClick={() => setPaused((v) => !v)}>
               {paused ? 'play' : 'pause'}
             </button>
             <button
-              className="lab__btn"
+              className="btn"
               onClick={() => set('seed', Math.floor(Math.random() * 100000))}
             >
               reseed
             </button>
             <button
-              className="lab__btn"
+              className="btn"
               onClick={() => {
                 setParams({ ...DEFAULTS })
                 setLfos(defaultLfos())
@@ -464,7 +422,7 @@ const StyleLab = () => {
               reset
             </button>
             <button
-              className="lab__btn"
+              className="btn"
               onClick={() => {
                 navigator.clipboard?.writeText(JSON.stringify(exportConfig(params, lfos), null, 2))
               }}
@@ -478,4 +436,4 @@ const StyleLab = () => {
   )
 }
 
-export default StyleLab
+export default Controls

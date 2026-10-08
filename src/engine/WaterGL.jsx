@@ -40,12 +40,9 @@ function buildProgram(gl) {
 }
 
 const rgb01 = (hex) => hexToRgb(hex).map((c) => c / 255)
-// ?nogl in the URL behaves as if WebGL2 were missing — for checking the
-// notice without hunting down a browser that lacks it.
+// ?nogl in the URL behaves as if WebGL2 were missing. for testing purposes
 const forceFallback = () => new URLSearchParams(window.location.search).has('nogl')
 
-// What browsers without WebGL2 get. There's no point faking the water without
-// it, so just say why there's nothing here.
 const NoWebGL = ({ className, style }) => (
   <div
     className={className}
@@ -66,15 +63,7 @@ const NoWebGL = ({ className, style }) => (
   </div>
 )
 
-/**
- * WebGL2 renderer for the 1-bit water.
- *
- * Still draws at a low logical resolution and lets CSS scale it up with
- * image-rendering: pixelated — the GPU makes the pixel count cheap, but the
- * chunky grid is the whole look, so it stays.
- *
- * Shows a notice instead (NoWebGL) if WebGL2 is unavailable.
- */
+// webgl2 renderer
 const WaterGL = ({ params, lfos, paused = false, onFallback, className, style }) => {
   const canvasRef = useRef(null)
   const paramsRef = useRef(params)
@@ -109,14 +98,11 @@ const WaterGL = ({ params, lfos, paused = false, onFallback, className, style })
     const loc = {}
     for (const name of UNIFORMS) loc[name] = gl.getUniformLocation(program, name)
 
-    // WebGL2 requires a bound VAO to draw, even with no attributes.
-    const vao = gl.createVertexArray()
-    gl.bindVertexArray(vao)
     gl.useProgram(program)
 
     let frameId = null
     let elapsed = 0
-    let waterTime = 0 // real time integrated against speed — see the shader
+    let waterTime = 0 // see uWaterTime in shader
     let lastStamp = null
 
     const loop = (stamp) => {
@@ -175,7 +161,6 @@ const WaterGL = ({ params, lfos, paused = false, onFallback, className, style })
     return () => {
       if (frameId !== null) cancelAnimationFrame(frameId)
       gl.deleteProgram(program)
-      gl.deleteVertexArray(vao)
     }
   }, [onFallback])
 

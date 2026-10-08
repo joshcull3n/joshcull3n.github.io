@@ -1,20 +1,14 @@
-// Single source of truth for parameter metadata. The lab builds its sliders
-// from this, and the modulation system reads min/max to scale LFO depth — so
-// one depth control behaves sensibly across params with wildly different
-// ranges (frequency lives in 0.005..0.4, scale in 6..160).
-
 export const PARAM_META = {
   // field
   scale: { label: 'scale', min: 6, max: 160, step: 1, group: 'field' },
   bands: { label: 'bands', min: 1, max: 16, step: 0.1, group: 'field' },
   octaves: { label: 'octaves', min: 1, max: 5, step: 1, group: 'field', int: true },
 
-  // line quality — what separates water from a topographic map
+  // line quality
   lineWidth: { label: 'width (px)', min: 0.3, max: 5, step: 0.05, group: 'line' },
   lineVary: { label: 'vary', min: 0, max: 1, step: 0.01, group: 'line' },
   breakup: { label: 'breakup', min: 0, max: 1, step: 0.01, group: 'line' },
-  // `advanced` params sit behind a "more" toggle in the lab — subtle enough
-  // that they'd crowd out the controls that matter.
+  // `advanced` params hidden behind a "more" dropdown
   facing: { label: 'facing', min: 0, max: 1.5, step: 0.01, group: 'line', advanced: true },
   lightAngle: { label: 'light angle', min: 0, max: 360, step: 1, group: 'line', advanced: true },
 
@@ -24,7 +18,7 @@ export const PARAM_META = {
   frequency: { label: 'frequency', min: 0.005, max: 0.4, step: 0.005, group: 'waves' },
   waves: { label: 'wave count', min: 1, max: 8, step: 1, group: 'waves', int: true },
 
-  // flow — the evolving field that keeps the water from going static
+  // flow
   flow: { label: 'flow', min: 0, max: 3, step: 0.01, group: 'flow' },
   bend: { label: 'bend', min: 0, max: 3, step: 0.01, group: 'flow' },
   swirl: { label: 'swirl', min: 0, max: 1.5, step: 0.01, group: 'flow' },
@@ -34,7 +28,7 @@ export const PARAM_META = {
   grain: { label: 'grain', min: 0, max: 1, step: 0.01, group: 'noise' },
   speckle: { label: 'speckle', min: 0, max: 1, step: 0.01, group: 'noise' },
 
-  // time — speed is the master clock; everything the water does runs on it
+  // time
   speed: { label: 'speed', min: 0, max: 6, step: 0.05, group: 'time' },
   driftX: { label: 'drift x', min: -8, max: 8, step: 0.05, group: 'time' },
   driftY: { label: 'drift y', min: -8, max: 8, step: 0.05, group: 'time' },
@@ -48,9 +42,7 @@ export const PARAM_META = {
     step: 1,
     group: 'output',
     int: true,
-    // Modulating this would resize the canvas every frame — expensive, and it
-    // reads as flickering rather than motion.
-    modulatable: false,
+    modulatable: false, // too expensive and ugly to modulate
   },
   dither: { label: 'dither', min: 0, max: 1, step: 0.02, group: 'output' },
 }

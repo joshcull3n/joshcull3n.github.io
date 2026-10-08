@@ -6,26 +6,23 @@
   font-display: block;
 }
 
-/* The lab is its own page (/water), so it brings its own reset. */
 body {
   margin: 0;
   background: #000;
 }
 
-.lab {
+.page {
   position: fixed;
   inset: 0;
   overflow: hidden;
 }
 
-.lab__water {
+.water {
   position: absolute;
   inset: 0;
 }
 
-/* Control panel. Deliberately plain — this is a tuning rig, not the site.
-   The real UI gets designed once the water is dialled in. */
-.lab__panel {
+.panel {
   position: absolute;
   top: 0;
   right: 0;
@@ -42,24 +39,17 @@ body {
   backdrop-filter: blur(2px);
 }
 
-.lab__panel.is-hidden {
+.panel.is-hidden {
   display: none;
 }
 
-.lab__title {
-  margin: 0 0 4px;
-  font-size: 15px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
-
-.lab__hint {
+.hint {
   margin: 0 0 16px;
   opacity: 0.55;
   font-size: 11px;
 }
 
-.lab__group {
+.group {
   margin: 0 0 18px;
   padding: 0;
   border: 0;
@@ -67,7 +57,7 @@ body {
   padding-top: 10px;
 }
 
-.lab__legend {
+.legend {
   padding: 0;
   font-size: 11px;
   text-transform: uppercase;
@@ -75,7 +65,7 @@ body {
   opacity: 0.5;
 }
 
-.lab__row {
+.row {
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
@@ -83,24 +73,24 @@ body {
   margin-bottom: 7px;
 }
 
-.lab__row label {
+.row label {
   font-size: 12px;
 }
 
-.lab__value {
+.value {
   font-variant-numeric: tabular-nums;
   opacity: 0.7;
   font-size: 11px;
 }
 
-.lab__row input[type='range'] {
+.row input[type='range'] {
   grid-column: 1 / -1;
   width: 100%;
   margin: 0;
   accent-color: #fff;
 }
 
-.lab__row input[type='color'] {
+.row input[type='color'] {
   width: 100%;
   height: 22px;
   padding: 0;
@@ -108,14 +98,14 @@ body {
   background: none;
 }
 
-.lab__buttons {
+.buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   margin-top: 12px;
 }
 
-.lab__btn {
+.btn {
   flex: 1 1 auto;
   padding: 6px 10px;
   border: 1px solid rgba(255, 255, 255, 0.5);
@@ -126,32 +116,32 @@ body {
   cursor: pointer;
 }
 
-.lab__btn:hover {
+.btn:hover {
   background: rgba(255, 255, 255, 0.15);
 }
 
 /* A tilde in front of a param label means an LFO is driving it — its slider
    now sets the centre of the swing rather than the value you see on screen. */
-.lab__mod-dot {
+.mod-dot {
   margin-right: 4px;
   color: #7fd4ff;
 }
 
-.lab__lfo {
+.lfo {
   margin: 10px 0;
   padding: 8px 9px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   background: rgba(255, 255, 255, 0.04);
 }
 
-.lab__lfo-head {
+.lfo-head {
   display: flex;
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
 }
 
-.lab__lfo-name {
+.lfo-name {
   flex: 1 1 auto;
   font-size: 11px;
   text-transform: uppercase;
@@ -159,7 +149,7 @@ body {
   opacity: 0.65;
 }
 
-.lab__lfo-enable {
+.lfo-enable {
   display: flex;
   align-items: center;
   gap: 3px;
@@ -168,18 +158,18 @@ body {
   cursor: pointer;
 }
 
-.lab__lfo-enable input {
+.lfo-enable input {
   margin: 0;
   accent-color: #7fd4ff;
 }
 
-.lab__btn--tiny {
+.btn--tiny {
   flex: 0 0 auto;
   padding: 0 6px;
   line-height: 18px;
 }
 
-.lab__select {
+.select {
   grid-column: 2;
   justify-self: end;
   max-width: 150px;
@@ -191,7 +181,7 @@ body {
   font-size: 11px;
 }
 
-.lab__toggle {
+.toggle {
   position: absolute;
   top: 12px;
   right: 12px;
@@ -205,7 +195,7 @@ body {
   cursor: pointer;
 }
 
-.lab__fps {
+.fps {
   position: absolute;
   bottom: 10px;
   left: 12px;
@@ -218,12 +208,11 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-/* Collapsible home for the subtler params. */
-.lab__more {
+.more {
   margin-top: 2px;
 }
 
-.lab__more > summary {
+.more > summary {
   margin-bottom: 7px;
   font-size: 11px;
   opacity: 0.5;
@@ -231,25 +220,23 @@ body {
   list-style: none;
 }
 
-.lab__more > summary::-webkit-details-marker {
+.more > summary::-webkit-details-marker {
   display: none;
 }
 
-.lab__more > summary::before {
+.more > summary::before {
   content: '+ ';
 }
 
-.lab__more[open] > summary::before {
+.more[open] > summary::before {
   content: '− ';
 }
 
-.lab__more > summary:hover {
+.more > summary:hover {
   opacity: 0.85;
 }
 
-/* Tile boundaries: a 1px line along the top and left edge of every tile.
-   Faint, so it's enough to check a seam without being mistaken for texture. */
-.lab__grid {
+.grid {
   position: absolute;
   inset: 0;
   pointer-events: none;
@@ -258,52 +245,45 @@ body {
     linear-gradient(to bottom, rgba(255, 0, 80, 0.6) 1px, transparent 1px);
 }
 
-.lab__spacer {
+.spacer {
   height: 10px;
 }
 
-/* Breathing room between the preset buttons and the first control group. */
-.lab__presets {
+.presets {
   margin-bottom: 20px;
 }
 
-.lab__palette {
+.palette {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 7px;
 }
 
-/* The rows' bottom margin would otherwise count toward the pickers' height and
-   push the icon below the midpoint between them. */
-.lab__palette .lab__row:last-child {
+.palette .row:last-child {
   margin-bottom: 0;
 }
 
-.lab__palette-pickers {
+.palette-pickers {
   flex: 1 1 auto;
 }
 
-/* Icon button beside the pickers: just the icon in a snug bordered box. */
-.lab__btn--mini {
+.btn--mini {
   flex: 0 0 auto;
   padding: 3px 4px;
   line-height: 0;
 }
 
-/* Label in a fixed column, picker stretched across the rest. */
-.lab__palette .lab__row {
+.palette .row {
   grid-template-columns: 44px 1fr;
 }
 
-/* The preset you're on: filled while the settings still match it, a dashed
-   outline once you've tweaked away from it. */
-.lab__btn.is-active {
+.btn.is-active {
   background: #fff;
   color: #000;
 }
 
-.lab__btn.is-modified {
+.btn.is-modified {
   border-style: dashed;
   border-color: #fff;
 }
