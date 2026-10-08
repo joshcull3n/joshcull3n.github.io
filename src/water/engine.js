@@ -31,7 +31,7 @@ export const DEFAULTS = {
   // Uniform lines read as a topographic map. These three put the
   // non-uniformity back, but keyed to the field instead of to randomness.
   lineWidth: 2.5, // base contour thickness, in logical pixels
-  lineVary: 1, // how much thickness wanders along and between lines
+  lineVary: 0, // how much thickness wanders along and between lines
   breakup: 0.4, // erosion — strokes break into runs and drop out in patches
   facing: 0.85, // weight on slopes turned toward the light
   lightAngle: 135, // degrees; where that light comes from
@@ -47,14 +47,15 @@ export const DEFAULTS = {
   // place, which leaves permanent dead patches and visibly straight waves.
   flow: 2.5, // how far the flow folds the field — fills dead regions
   bend: 0.6, // how much the flow curves the wavefronts
-  swirl: 0.5, // local rotation of the wave displacement
+  swirl: 0.5, // how much the wave motion curls, varying across the screen
+  spin: 0.5, // how fast that curl turns over time; negative counter-rotates
 
   // --- noise ---
   grain: 0, // random threshold jitter — line edges fizz
   speckle: 0, // random dots in the paper, clustered near lines like foam
 
   // --- motion ---
-  speed: 1.5,
+  speed: 0.5,
   driftX: 0.5,
   driftY: 0.2,
 
@@ -199,6 +200,7 @@ export function renderFrame(imageData, w, h, time, params) {
   const flowAmt = p.flow || 0
   const bendPx = (p.bend || 0) * p.scale * 0.5
   const swirl = p.swirl || 0
+  const spin = p.spin || 0
   const ft = time * p.speed * 0.08
   const needFlow = flowAmt > 0 || bendPx > 0 || swirl > 0
   const grain = p.grain || 0
@@ -241,8 +243,8 @@ export function renderFrame(imageData, w, h, time, params) {
         dy += wv.ampY * fastSin(wx * wv.kyx + wy * wv.kyy + time * wv.speedY)
       }
 
-      if (swirl > 0) {
-        const a = swirl * (flx * Math.PI + time * 0.15)
+      if (swirl > 0 || spin !== 0) {
+        const a = swirl * flx * Math.PI + spin * time * 0.15
         const ca = Math.cos(a)
         const sa = Math.sin(a)
         const rdx = ca * dx - sa * dy
@@ -258,7 +260,7 @@ export function renderFrame(imageData, w, h, time, params) {
       if (lineVary > 0 || breakup > 0) {
         const seed = hashContour(Math.round(f * p.bands))
         if (lineVary > 0) {
-          vary[idx] = valueNoise(ux * 0.55 + seed * 53 + 0.07 * lt, uy * 0.55 + seed * 53 - 0.05 * lt, p.seed)
+          vary[idx] = valueNoise(ux * 2.2 + seed * 53 + 0.07 * lt, uy * 2.2 + seed * 53 - 0.05 * lt, p.seed)
         }
         if (breakup > 0) {
           const mx = ux * 1.35 + seed * 113
@@ -305,8 +307,11 @@ export function renderFrame(imageData, w, h, time, params) {
       const distToEdge = Math.abs(banded - Math.round(banded))
 
       let width = p.lineWidth
-      if (lineVary > 0) width *= 1 + lineVary * (vary[idx] * 2 - 1) * 1.3
+      if (lineVary > 0) width *= Math.pow(2, lineVary * (vary[idx] * 2 - 1) * 1.6)
       if (facing > 0) width *= 1 + facing * ((dfdx * lightX + dfdy * lightY) / slope)
+      // Floor at a 1px hairline — see the shader for why.
+      const minWidth = Math.min(p.lineWidth, 1)
+      if (width < minWidth) width = minWidth
       if (width < 0.02) width = 0.02
 
       let intensity = 1 - distToEdge / slope / width

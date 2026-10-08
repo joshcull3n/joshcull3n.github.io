@@ -8,7 +8,7 @@ const UNIFORMS = [
   'uResolution', 'uTime', 'uInk', 'uPaper', 'uScale', 'uBands', 'uLineWidth',
   'uAmplitude', 'uFrequency', 'uVolatility', 'uSpeed', 'uDrift', 'uDither',
   'uSeed', 'uOctaves', 'uWaves', 'uLineVary', 'uBreakup', 'uFacing', 'uLightAngle',
-  'uFlow', 'uBend', 'uSwirl', 'uGrain', 'uSpeckle',
+  'uFlow', 'uBend', 'uSwirl', 'uSpin', 'uGrain', 'uSpeckle',
 ]
 
 function compile(gl, type, source) {
@@ -134,6 +134,7 @@ const WaterGL = ({ params, lfos, paused = false, onFallback, className, style })
       gl.uniform1f(loc.uFlow, p.flow)
       gl.uniform1f(loc.uBend, p.bend)
       gl.uniform1f(loc.uSwirl, p.swirl)
+      gl.uniform1f(loc.uSpin, p.spin)
       gl.uniform1f(loc.uGrain, p.grain)
       gl.uniform1f(loc.uSpeckle, p.speckle)
 

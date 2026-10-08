@@ -13,8 +13,10 @@ export const PARAM_META = {
   lineWidth: { label: 'width (px)', min: 0.3, max: 5, step: 0.05, group: 'line' },
   lineVary: { label: 'vary', min: 0, max: 1, step: 0.01, group: 'line' },
   breakup: { label: 'breakup', min: 0, max: 1, step: 0.01, group: 'line' },
-  facing: { label: 'facing', min: 0, max: 1.5, step: 0.01, group: 'line' },
-  lightAngle: { label: 'light angle', min: 0, max: 360, step: 1, group: 'line' },
+  // `advanced` params sit behind a "more" toggle in the lab — subtle enough
+  // that they'd crowd out the controls that matter.
+  facing: { label: 'facing', min: 0, max: 1.5, step: 0.01, group: 'line', advanced: true },
+  lightAngle: { label: 'light angle', min: 0, max: 360, step: 1, group: 'line', advanced: true },
 
   // waves
   volatility: { label: 'volatility', min: 0, max: 6, step: 0.05, group: 'waves' },
@@ -25,7 +27,8 @@ export const PARAM_META = {
   // flow — the evolving field that keeps the water from going static
   flow: { label: 'flow', min: 0, max: 3, step: 0.01, group: 'flow' },
   bend: { label: 'bend', min: 0, max: 3, step: 0.01, group: 'flow' },
-  swirl: { label: 'swirl', min: 0, max: 3, step: 0.01, group: 'flow' },
+  swirl: { label: 'swirl', min: 0, max: 1.5, step: 0.01, group: 'flow' },
+  spin: { label: 'spin', min: -3, max: 3, step: 0.01, group: 'flow' },
 
   // noise
   grain: { label: 'grain', min: 0, max: 1, step: 0.01, group: 'noise' },

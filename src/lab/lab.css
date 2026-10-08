@@ -211,3 +211,32 @@
   font-size: 11px;
   font-variant-numeric: tabular-nums;
 }
+
+/* Collapsible home for the subtler params. */
+.lab__more {
+  margin-top: 2px;
+}
+
+.lab__more > summary {
+  margin-bottom: 7px;
+  font-size: 11px;
+  opacity: 0.5;
+  cursor: pointer;
+  list-style: none;
+}
+
+.lab__more > summary::-webkit-details-marker {
+  display: none;
+}
+
+.lab__more > summary::before {
+  content: '+ ';
+}
+
+.lab__more[open] > summary::before {
+  content: '− ';
+}
+
+.lab__more > summary:hover {
+  opacity: 0.85;
+}

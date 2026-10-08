@@ -7,6 +7,28 @@ import { createLFO, SHAPES } from '../water/modulation.js'
 import { PRESETS, randomLook } from './presets.js'
 import './lab.css'
 
+// The config as copied to the clipboard: params plus LFOs, with LFOs in the
+// same [target, { ... }] shape presets.js uses, so a copied config can be
+// pasted straight in as a preset. Numbers are rounded because randomize()
+// produces long floats nobody wants to read.
+const round = (v) => (typeof v === 'number' ? Math.round(v * 1000) / 1000 : v)
+
+function exportConfig(params, lfos) {
+  const out = Object.fromEntries(Object.entries(params).map(([k, v]) => [k, round(v)]))
+  out.lfos = lfos.map(({ target, shape, rate, depth, phase, enabled }) => [
+    target,
+    {
+      shape,
+      rate: round(rate),
+      depth: round(depth),
+      phase: round(phase),
+      // Only worth recording when it's off; on is the default.
+      ...(enabled ? {} : { enabled: false }),
+    },
+  ])
+  return out
+}
+
 const StyleLab = () => {
   const [params, setParams] = useState({ ...DEFAULTS })
   const [showPanel, setShowPanel] = useState(true)
@@ -56,6 +78,25 @@ const StyleLab = () => {
   // Params currently driven by an LFO — their sliders set the centre point
   // rather than the live value, so the UI marks them.
   const modulated = new Set(lfos.filter((l) => l.enabled && l.depth > 0).map((l) => l.target))
+
+  const renderSlider = ({ key, label, min, max, step }) => (
+    <div className="lab__row" key={key}>
+      <label htmlFor={key}>
+        {modulated.has(key) ? <span className="lab__mod-dot">~</span> : null}
+        {label}
+      </label>
+      <span className="lab__value">{Number(params[key]).toFixed(step < 1 ? 2 : 0)}</span>
+      <input
+        id={key}
+        type="range"
+        min={min}
+        max={max}
+        step={step}
+        value={params[key]}
+        onChange={(e) => set(key, parseFloat(e.target.value))}
+      />
+    </div>
+  )
 
   // Sampled frame rate — the headline number for whether this is viable as a
   // always-on background rather than a demo.
@@ -154,29 +195,23 @@ const StyleLab = () => {
           </div>
         </fieldset>
 
-        {GROUPS.map((group) => (
-          <fieldset className="lab__group" key={group}>
-            <legend className="lab__legend">{group}</legend>
-            {groupedParams(group).map(({ key, label, min, max, step }) => (
-              <div className="lab__row" key={key}>
-                <label htmlFor={key}>
-                  {modulated.has(key) ? <span className="lab__mod-dot">~</span> : null}
-                  {label}
-                </label>
-                <span className="lab__value">{Number(params[key]).toFixed(step < 1 ? 2 : 0)}</span>
-                <input
-                  id={key}
-                  type="range"
-                  min={min}
-                  max={max}
-                  step={step}
-                  value={params[key]}
-                  onChange={(e) => set(key, parseFloat(e.target.value))}
-                />
-              </div>
-            ))}
-          </fieldset>
-        ))}
+        {GROUPS.map((group) => {
+          const all = groupedParams(group)
+          const basic = all.filter((p) => !p.advanced)
+          const advanced = all.filter((p) => p.advanced)
+          return (
+            <fieldset className="lab__group" key={group}>
+              <legend className="lab__legend">{group}</legend>
+              {basic.map(renderSlider)}
+              {advanced.length > 0 ? (
+                <details className="lab__more">
+                  <summary>more</summary>
+                  {advanced.map(renderSlider)}
+                </details>
+              ) : null}
+            </fieldset>
+          )
+        })}
 
         <fieldset className="lab__group">
           <legend className="lab__legend">modulation</legend>
@@ -244,7 +279,7 @@ const StyleLab = () => {
                 <input
                   type="range"
                   min={0.01}
-                  max={4}
+                  max={16}
                   step={0.01}
                   value={lfo.rate}
                   onChange={(e) => updateLFO(lfo.id, { rate: parseFloat(e.target.value) })}
@@ -298,14 +333,21 @@ const StyleLab = () => {
             >
               reseed
             </button>
-            <button className="lab__btn" onClick={() => setParams({ ...DEFAULTS })}>
+            <button
+              className="lab__btn"
+              onClick={() => {
+                setParams({ ...DEFAULTS })
+                setLfos([])
+              }}
+            >
               reset
             </button>
             <button
               className="lab__btn"
               onClick={() => {
-                console.log(JSON.stringify(params, null, 2))
-                navigator.clipboard?.writeText(JSON.stringify(params, null, 2))
+                const json = JSON.stringify(exportConfig(params, lfos), null, 2)
+                console.log(json)
+                navigator.clipboard?.writeText(json)
               }}
             >
               copy config

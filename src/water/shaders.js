@@ -38,6 +38,7 @@ uniform float uLightAngle;
 uniform float uFlow;
 uniform float uBend;
 uniform float uSwirl;
+uniform float uSpin;
 uniform float uGrain;
 uniform float uSpeckle;
 
@@ -131,12 +132,16 @@ void main() {
     d.y += ampI * 0.8 * sin(dot(waveWorld, ky) + uTime * uSpeed * (0.9 + fi * 0.23));
   }
 
-  // Swirl: rotate the displacement locally, by an angle that follows the flow
-  // and turns over time. Rotating the wave directions themselves would shift
-  // phase in proportion to distance from the origin — the far edge of the
-  // screen would strobe. Rotating d is local, so it's the same everywhere.
-  if (uSwirl > 0.0) {
-    float a = uSwirl * (flow.x * 3.14159 + uTime * 0.15);
+  // Rotate the displacement, by an angle with two independent parts:
+  //   swirl — varies across the screen with the flow, so motion curls. At 1
+  //           it already spans every direction; past that it just twists
+  //           tighter, hence the slider stops at 1.5.
+  //   spin  — grows with time, so the curl turns. Negative counter-rotates.
+  // Rotating the wave directions themselves would shift phase in proportion
+  // to distance from the origin — the far edge of the screen would strobe.
+  // Rotating d is local, so it's the same everywhere.
+  if (uSwirl > 0.0 || uSpin != 0.0) {
+    float a = uSwirl * flow.x * 3.14159 + uSpin * uTime * 0.15;
     float ca = cos(a), sa = sin(a);
     d = vec2(ca * d.x - sa * d.y, sa * d.x + ca * d.y);
   }
@@ -172,11 +177,14 @@ void main() {
   // stays erased forever. These offsets let thick spots and gaps travel.
   float lt = uTime * uSpeed;
 
-  // Thickness breathes *along* each line, offset per contour so neighbouring
-  // lines don't fatten in sync.
+  // Thickness swells and tapers *along* each line — sampled finer than the
+  // field so the change happens within a stroke rather than across whole
+  // regions, and offset per contour so neighbouring lines don't fatten in
+  // sync. Multiplicative (0.33x..3x at full strength) so it can never go
+  // negative.
   if (uLineVary > 0.0) {
-    float v = valueNoise(uv * 0.55 + lineSeed * 53.0 + vec2(0.07, -0.05) * lt);
-    width *= 1.0 + uLineVary * (v * 2.0 - 1.0) * 1.3;
+    float v = valueNoise(uv * 2.2 + lineSeed * 53.0 + vec2(0.07, -0.05) * lt);
+    width *= exp2(uLineVary * (v * 2.0 - 1.0) * 1.6);
   }
 
   // A contour map has no light source. Water line-art does: strokes gather on
@@ -186,6 +194,12 @@ void main() {
     vec2 lightDir = vec2(cos(uLightAngle), sin(uLightAngle));
     width *= 1.0 + uFacing * dot(normalize(grad + 1e-6), lightDir);
   }
+
+  // A 1-bit line can't be thinner than a pixel: below that it doesn't get
+  // thinner, it breaks up into scattered dots. So vary and facing can taper a
+  // stroke down to a solid 1px hairline but no further — unless the base width
+  // was set thinner than that on purpose.
+  width = max(width, min(uLineWidth, 1.0));
 
   float intensity = clamp(1.0 - (distToEdge / slope) / max(width, 0.02), 0.0, 1.0);
 

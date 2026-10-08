@@ -20,7 +20,7 @@ export const PRESETS = {
   // Rotation. Everything curls, and the light circles around it.
   eddy: preset({
     scale: 90, bands: 5, lineWidth: 1.6, lineVary: 0.7, breakup: 0.25, facing: 1.2,
-    waves: 3, amplitude: 12, frequency: 0.07, volatility: 1.4, flow: 2.2, bend: 2, swirl: 2.6,
+    waves: 3, amplitude: 12, frequency: 0.07, volatility: 1.4, flow: 2.2, bend: 2, swirl: 1.5, spin: 2.6,
     speed: 1.2, driftX: 0, driftY: 0, dither: 0.1,
     lfos: [['lightAngle', { shape: 'saw', rate: 0.04, depth: 1 }]],
   }),
@@ -28,43 +28,68 @@ export const PRESETS = {
   // A river: everything pulled one way, lit from upstream.
   current: preset({
     scale: 110, bands: 4, lineWidth: 2, lineVary: 0.8, breakup: 0.35, facing: 1.4, lightAngle: 180,
-    waves: 2, amplitude: 8, frequency: 0.05, volatility: 1.2, flow: 1, bend: 2.5, swirl: 0,
+    waves: 2, amplitude: 8, frequency: 0.05, volatility: 1.2, flow: 1, bend: 2.5, swirl: 0, spin: 0,
     speed: 1, driftX: 6, driftY: 1.2, dither: 0,
   }),
 
   // Chaos, but still water.
   squall: preset({
     scale: 60, bands: 6, octaves: 3, lineWidth: 1.8, lineVary: 1, breakup: 0.3, facing: 1,
-    waves: 5, amplitude: 6, frequency: 0.07, volatility: 2.2, flow: 3, bend: 1, swirl: 1.5,
-    speed: 2.5, driftX: -2, driftY: 1.5, dither: 0.1, ink: '#ff44eb',
+    waves: 5, amplitude: 6, frequency: 0.07, volatility: 2.2, flow: 3, bend: 1, swirl: 1.5, spin: 1.5,
+    speed: 2.5, driftX: -2, driftY: 1.5, dither: 0.1, ink: '#ff5ccb',
     lfos: [['volatility', { shape: 'random', rate: 0.25, depth: 0.15 }]],
   }),
 
   // Grain. Heavy dither and every octave, so strokes dissolve into static.
   static: preset({
     scale: 30, bands: 4, octaves: 5, lineWidth: 3.5, lineVary: 1, breakup: 0.5, facing: 0.6,
-    waves: 4, amplitude: 6, frequency: 0.12, volatility: 1, flow: 1.5, bend: 0.5, swirl: 0.8,
+    waves: 4, amplitude: 6, frequency: 0.12, volatility: 1, flow: 1.5, bend: 0.5, swirl: 0.8, spin: 0.8,
     speed: 1, dither: 1, speckle: 0.2,
   }),
 
   // static, white on blue.
   ocean: preset({
     scale: 30, bands: 4, octaves: 5, lineWidth: 3.5, lineVary: 1, breakup: 0.5, facing: 0.6,
-    waves: 4, amplitude: 6, frequency: 0.12, volatility: 1, flow: 1.5, bend: 0.5, swirl: 0.8,
-    speed: 1, dither: 1, paper: '#009eff',
+    waves: 4, amplitude: 6, frequency: 0.12, volatility: 1, flow: 1.5, bend: 0.5, swirl: 0.8, spin: 0.8,
+    speed: 1, dither: 0.4, paper: '#009eff',
   }),
 
   // Near-black. Lines only occasionally make it to the surface.
   abyss: preset({
     scale: 120, bands: 2, lineWidth: 1.5, lineVary: 0.9, breakup: 0.75, facing: 1.3,
     lightAngle: 270, waves: 2, amplitude: 6, frequency: 0.06, volatility: 1, flow: 2, bend: 0.6,
-    swirl: 0.4, speed: 0.6, driftX: 0.2, driftY: 0.6, dither: 0,
+    swirl: 0.4, spin: 0.4, speed: 0.6, driftX: 0.2, driftY: 0.6, dither: 0,
     lfos: [['breakup', { rate: 0.03, depth: 0.3 }]],
+  }),
+
+  // No waves at all — just the flow folding a fine field, in fat dithered
+  // strokes that swell and taper.
+  ether: preset({
+    scale: 52, bands: 1, octaves: 5,
+    lineWidth: 5, lineVary: 1, breakup: 0, facing: 0, lightAngle: 0,
+    waves: 1, amplitude: 0, frequency: 0.01, volatility: 0,
+    flow: 3, bend: 0, swirl: 0, spin: 0,
+    grain: 0, speckle: 0,
+    speed: 0.5, driftX: 0, driftY: 0,
+    dither: 1, inkOpacity: 1,
+  }),
+
+  // Busy and cellular, like something growing. The LFO on amplitude
+  // makes the whole surface slowly tighten and relax.
+  organic: preset({
+    scale: 30, bands: 4, octaves: 5,
+    lineWidth: 3.5, lineVary: 1, breakup: 0.5, facing: 0.6, lightAngle: 135,
+    waves: 8, amplitude: 8.6, frequency: 0.01, volatility: 1.95,
+    flow: 1.5, bend: 0.5, swirl: 0.8, spin: 0.8,
+    grain: 0, speckle: 0,
+    speed: 1, driftX: 0.5, driftY: 0.2,
+    dither: 0, inkOpacity: 1, ink: '#ffccd4',
+    lfos: [['amplitude', { shape: 'sine', rate: 0.12, depth: 0.37, phase: 0 }]],
   }),
 
   // Every water-ish term off — the plain topographic map, kept as an A/B.
   contour: preset({
-    lineWidth: 1.3, lineVary: 0, breakup: 0, facing: 0, flow: 0, bend: 0, swirl: 0,
+    lineWidth: 1.3, lineVary: 0, breakup: 0, facing: 0, flow: 0, bend: 0, swirl: 0, spin: 0,
     dither: 0,
   }),
 }
@@ -84,7 +109,7 @@ const pick = (list) => list[Math.floor(Math.random() * list.length)]
 // Most rolls should be clean; texture is a seasoning, not the default.
 const sometimes = (chance, roll) => (Math.random() < chance ? roll() : 0)
 
-const LFO_TARGETS = ['lightAngle', 'bands', 'breakup', 'swirl', 'volatility', 'speckle', 'flow']
+const LFO_TARGETS = ['lightAngle', 'bands', 'breakup', 'swirl', 'spin', 'volatility', 'speckle', 'flow']
 
 export function randomLook() {
   const frequency = randLog(0.03, 0.15)
@@ -116,7 +141,9 @@ export function randomLook() {
     volatility,
     flow: rand(0.5, 3),
     bend: rand(0, 2.5),
-    swirl: rand(0, 2.5),
+    swirl: rand(0, 1.5),
+    // Squared toward zero: mostly a slow turn, occasionally a fast one.
+    spin: Math.sign(Math.random() - 0.5) * Math.pow(Math.random(), 2) * 2.5,
     speed: rand(0.4, 2.5),
     // Squared toward zero: mostly gentle drift, occasionally a real current.
     driftX: Math.sign(Math.random() - 0.5) * Math.pow(Math.random(), 2) * 4,
